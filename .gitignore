@@ -4,5 +4,5 @@ info/
 public/node_modules/
 public/uploads/
 public/reports/
-public/static/reports/html/*
-public/static/reports/pdf/*
+public/static/reports/html/*.html
+public/static/reports/pdf/*.pdf
