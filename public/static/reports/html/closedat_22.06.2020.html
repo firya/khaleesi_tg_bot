@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <mate charest="utf-8" />
+  <title>Замеры закрытые за 22.06.2020, пн</title>
+  <style>
+    body,
+    html {
+      padding: 0;
+      margin: 0;
+      color: #27272B;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font-size: 18px;
+      padding-left: 32px;
+      margin-bottom: 16px;
+    }
+
+    a {
+      color: #4390BB;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .leads {}
+
+    .lead {
+      page-break-inside: avoid;
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+      border-bottom: 1px dotted #CFCFCF;
+    }
+
+    .lead:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .lead:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .lead__left {
+      padding: 8px 16px 8px 32px;
+      overflow: hidden;
+    }
+
+    .lead__header {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .lead__header:before {
+      position: absolute;
+      right: 100%;
+      top: 2px;
+      counter-increment: leads;
+      content: counter(leads) ".";
+      color: #A3A3A3;
+      font-size: 12px;
+      padding-right: 2px;
+
+    }
+
+    .lead__title {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .lead__url {
+      font-size: 12px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .lead__date {
+      color: #AEAEAE;
+      font-size: 12px;
+      display: inline-block;
+      margin-left: 8px;
+    }
+
+    .lead__contacts {}
+
+    .lead__name {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .lead__phone {
+      font-size: 14px;
+      color: #234E66;
+      margin-bottom: 4px;
+    }
+
+    .lead__info {
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+
+    .lead__footer {
+      justify-content: space-between;
+
+    }
+
+    .lead__user {
+      overflow: hidden;
+    }
+
+    .lead__user-name {
+      font-size: 14px;
+    }
+
+    .lead__site-domain {
+      color: #4390BB;
+      font-size: 14px;
+    }
+
+    .lead__site {
+      float: right;
+      text-align: right;
+    }
+
+    .lead__right {
+      float: right;
+      width: 220px;
+      box-sizing: border-box;
+      padding: 8px 16px;
+      border-left: 1px dotted #CFCFCF;
+    }
+
+    .lead__label {
+      font-size: 13px;
+      color: #57565C;
+      margin-bottom: 4px;
+    }
+
+    .lead__master {
+      margin-bottom: 14px;
+    }
+
+    .lead__meter-date {
+      font-size: 14px;
+    }
+
+    .lead__meter-time {
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .common {
+      margin-left: 32px;
+      margin-bottom: 32px;
+    }
+
+    .common:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .common__block {
+      float: left;
+      padding-right: 20px;
+      margin-bottom: 20px;
+      height: 40px;
+      width: 170px;
+    }
+
+    .common__block-header {
+      font-size: 14px;
+    }
+
+    .common__block-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4390BB;
+    }
+
+    .table {
+      margin-left: 32px;
+      margin-bottom: 32px;
+    }
+
+    .table table {
+      margin-left: -8px;
+    }
+
+    .table__header {
+      color: #57565C;
+    }
+
+    table {
+      margin: 0 0 20px;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      border-collapse: collapse;
+    }
+
+    tr:nth-child(2n+1) {
+      background-color: #F6F6F6;
+    }
+
+    tr:first-child {
+      background-color: transparent;
+    }
+
+    th {
+      padding: 4px 8px;
+      color: #57565C;
+      background-color: #eaeaea;
+      font-weight: normal;
+      text-align: left;
+    }
+
+    td {
+      padding: 6px 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <h1>Замеры закрытые за 22.06.2020, пн:</h1>
+    <div class="common">
+      <div class="common__block">
+        <div class="common__block-header">Расход:</div>
+        <div class="common__block-value">17 923₽</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Доход:</div>
+        <div class="common__block-value">67 500₽</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Замеров всего:</div>
+        <div class="common__block-value">7</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Стоимость замера:</div>
+        <div class="common__block-value">2 560₽</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Продаж всего:</div>
+        <div class="common__block-value">2</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Стоимость продажи:</div>
+        <div class="common__block-value">8 962₽</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Съём:</div>
+        <div class="common__block-value">28.57%</div>
+      </div>
+      <div class="common__block">
+        <div class="common__block-header">Средний чек:</div>
+        <div class="common__block-value">33 750₽</div>
+      </div>
+    </div>
+
+    <div class="table">
+      <table>
+        <tr>
+          <th>Сайты</th>
+          <th>Замеры</th>
+          <th>Продажи</th>
+          <th>Конверсия, %</th>
+        </tr>
+        <tr>
+          <td>dveri-2000.ru</td>
+          <td>5</td>
+          <td>1</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>krepostdver.ru</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Отзвон</td>
+          <td>1</td>
+          <td>1</td>
+          <td>100</td>
+        </tr>
+      </table>
+    </div>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Менеджеры</th>
+          <th>Замеры</th>
+          <th>Продажи</th>
+          <th>Конверсия, %</th>
+        </tr>
+        <tr>
+          <td>Татьяна Юрьевна</td>
+          <td>2</td>
+          <td>1</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Ирина Николаевна</td>
+          <td>3</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Надежда Викторовна</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Наталья Юрьевна</td>
+          <td>1</td>
+          <td>1</td>
+          <td>100</td>
+        </tr>
+      </table>
+    </div>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Замерщики</th>
+          <th>Замеры</th>
+          <th>Продажи</th>
+          <th>Конверсия, %</th>
+        </tr>
+        <tr>
+          <td>Александр(Беларусы)</td>
+          <td>4</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Даниил</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Сергей</td>
+          <td>2</td>
+          <td>2</td>
+          <td>100</td>
+        </tr>
+      </table>
+    </div>
+    <div class="table">
+      <table>
+        <tr>
+          <th>Товары</th>
+          <th>Замеры</th>
+          <th>Продажи</th>
+          <th>Конверсия, %</th>
+        </tr>
+        <tr>
+          <td>Двери</td>
+          <td>7</td>
+          <td>2</td>
+          <td>28.57</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="leads" style='counter-reset: leads 262;'>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Александр(Беларусы)</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">03.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/decline.png' />
+             <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Московская область Балашиха ул. Летная дом 5/5 кв.109/ 8 915 380 38 94 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/27709571'>27709571</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Александр</div>
+              <div class="lead__phone">+7 495 929-49-15</div>
+            </div>
+            <div class="lead__info">Прозвон с вечера на счет времени</div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">dveri-2000.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Татьяна Юрьевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Даниил</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">18.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/decline.png' />
+             <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Москва ул Липницкая д 14 кор 1 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/27973465'>27973465</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Руслан</div>
+              <div class="lead__phone">+7 926 067-14-09</div>
+            </div>
+            <div class="lead__info"></div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">krepostdver.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Ирина Николаевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Александр(Беларусы)</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">19.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/decline.png' />
+             <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Московская область Новая Москва пос Филимонковское снт Импульс Голенищево вл 13 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/27976585'>27976585</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Александр</div>
+              <div class="lead__phone">+7 977 329-25-11</div>
+            </div>
+            <div class="lead__info">М-197</div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">dveri-2000.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Ирина Николаевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Александр(Беларусы)</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">19.06.2020</div>
+          <div class="lead__meter-time">Вторая половина дня (14-22)</div>
+          <div class="lead__result">
+            <img src='/images/decline.png' />
+             <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Московская область город Чехов ул Земская д 8 кв 40 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/27988647'>27988647</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Иван</div>
+              <div class="lead__phone">+7 925 314-51-31</div>
+            </div>
+            <div class="lead__info"></div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">dveri-2000.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Ирина Николаевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Сергей</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">21.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/done.png' />
+            28500₽ <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Московская область Химки пр /т Мельникова дом 2/1 кв. 39 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/27994253'>27994253</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Алексей</div>
+              <div class="lead__phone">+7 495 793-09-28</div>
+            </div>
+            <div class="lead__info">Прозвон с вечера/ 8 926 628 61 91</div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">dveri-2000.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Татьяна Юрьевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Александр(Беларусы)</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">20.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/decline.png' />
+             <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Московская область г Щёлково, ул Проспект 60 лет Октября д 5 кв 15 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/28019743'>28019743</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Михаил</div>
+              <div class="lead__phone">+7 926 101-81-57</div>
+            </div>
+            <div class="lead__info">Вечером позвонить клиенту и согласовать время приезда</div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">dveri-2000.ru</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Надежда Викторовна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lead">
+        <div class="lead__right">
+          <div class="lead__label">Замерщик:</div>
+          <div class="lead__master">Сергей</div>
+          <div class="lead__label">Дата и время замера:</div>
+          <div class="lead__meter-date">21.06.2020</div>
+          <div class="lead__meter-time">В течении дня</div>
+          <div class="lead__result">
+            <img src='/images/done.png' />
+            39000₽ <br>
+            Двери
+          </div>
+        </div>
+        <div class="lead__left">
+          <div class="lead__header">
+            <div class="lead__title">
+              Москоская обл Красногорский рай д Путилково ул Сходненская д 15 кв 78 (id: <a class="lead__url"
+                href='https://universalstal.amocrm.ru/leads/detail/28035889'>28035889</a>)
+            </div>
+          </div>
+          <div class="lead__content">
+            <div class="lead__contacts">
+              <div class="lead__name">Татьяна</div>
+              <div class="lead__phone">+7 977 262-11-90</div>
+            </div>
+            <div class="lead__info"></div>
+          </div>
+          <div class="lead__footer">
+            <div class="lead__site">
+              <div class="lead__label">Сайт:</div>
+              <div class="lead__site-domain">Отзвон</div>
+            </div>
+            <div class="lead__user">
+              <div class="lead__label">Менеджер:</div>
+              <div class="lead__user-name">Наталья Юрьевна</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

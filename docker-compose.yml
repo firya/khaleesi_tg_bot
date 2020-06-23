@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    container_name: "${CONTAINER_NAME}_db"
+    ports:
+      - "3311:3306"
+    volumes:
+      - statibot_db_data:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+    command: mysqld --innodb-buffer-pool-size=256M
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "${CONTAINER_NAME}_node"
+    volumes:
+      - ./public:/home/node/app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=$NODE_ENV
+      - TELEGRAM_TOKEN=$TELEGRAM_TOKEN
+      - AMOCRM_KEY=$AMOCRM_KEY
+      - AMOCRM_USER=$AMOCRM_USER
+      - AMOCRM_DOMAIN=$AMOCRM_DOMAIN
+      - PDF_CONVERTER=$PDF_CONVERTER
+      - VIRTUAL_HOST=$VIRTUAL_HOST
+      - LETSENCRYPT_HOST=$LETSENCRYPT_HOST
+      - LETSENCRYPT_EMAIL=$LETSENCRYPT_EMAIL
+      - ROISTAT_ID=$ROISTAT_ID
+      - ROISTAT_KEY=$ROISTAT_KEY
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MAIL_USER=$MAIL_USER
+      - MAIL_PASSWORD=$MAIL_PASSWORD
+  ngrok:
+    container_name: "${CONTAINER_NAME}_ngrock"
+    ports:
+      - "0.0.0.0:4040:4040"
+    image: wernight/ngrok
+    restart: unless-stopped
+    links:
+      - "node"
+    environment:
+      - NGROK_AUTH=1dMAb7pdFI8akRbTvv4Rbm8tKmL_68C5M3sARoftyZePmjBYV
+      - NGROK_REGION=eu
+      - NGROK_PORT=node:8080
+
+volumes:
+  statibot_db_data:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
