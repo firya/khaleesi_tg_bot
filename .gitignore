@@ -6,5 +6,5 @@ public/uploads/
 public/reports/
 public/static/reports/html/*.html
 public/static/reports/pdf/*.pdf
-!public/static/reports/html/.gitkeep 
-!public/static/reports/pdf/.gitkeep 
+!public/static/reports/html/.gitkeep
+!public/static/reports/pdf/.gitkeep
