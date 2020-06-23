@@ -7,6 +7,6 @@ import './cron.js';
 // var report = new Report();
 // report.getLeadMeterAt(parseDate(date)).then(res => console.log(res));
 
-import PDF from './report/pdf.js';
-var date = '02.06.2020';
-PDF.generatePDF(date);
+// import PDF from './report/pdf.js';
+// var date = '02.06.2020';
+// PDF.generatePDF(date);
