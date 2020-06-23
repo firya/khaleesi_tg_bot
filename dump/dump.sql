@@ -2,32 +2,26 @@ DROP TABLE IF EXISTS `bot_accounts`;
 CREATE TABLE `bot_accounts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `chat_id` int(11) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
   `admin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `bot_accounts` (`id`, `chat_id`, `admin`)
+INSERT INTO `bot_accounts` (`id`, `chat_id`, `email`, `admin`)
 VALUES
-	(0,1690894,1),
-  (0,674185478,0);
+	(1,1690894,'catkitstudio@yandex.ru',1),
+	(4,674185478,NULL,0);
 
-DROP TABLE IF EXISTS `bot_cron`;
 CREATE TABLE `bot_cron` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `time` time DEFAULT NULL,
-  `interval` int(11) DEFAULT NULL,
+  `interval` varchar(32) DEFAULT NULL,
   `last_run` datetime DEFAULT NULL,
   `command` text,
+  `method` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `bot_cron` (`id`, `user_id`, `time`, `interval`, `last_run`, `command`)
-VALUES
-	(1, 1, "10:00:00", 86400, NULL, '/meter yesterday'),
-	(2, 2, "10:00:00", 86400, NULL, '/meter yesterday'),
-	(3, 1, "21:00:00", 86400, NULL, '/orders month');
-
 
 DROP TABLE IF EXISTS `caller_queue`;
 CREATE TABLE `caller_queue` (

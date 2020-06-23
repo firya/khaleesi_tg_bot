@@ -18,8 +18,8 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          sudo chown -R firya:firya /home/firya/statibot/public
-          cd /home/firya/statibot
+          sudo chown -R firya:firya /home/firya/Statibot/public
+          cd /home/firya/Statibot
           git reset --hard origin/master
           git pull origin master
-          sudo chown -R www-data:www-data /home/firya/statibot/public
+          sudo chown -R www-data:www-data /home/firya/Statibot/public
