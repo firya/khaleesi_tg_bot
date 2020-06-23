@@ -8,18 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
 
-    - name: Executing remote command
+    - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: |
-          sudo chown -R firya:firya /home/firya/Statibot/public
-          cd /home/firya/Statibot
-          git reset --hard origin/master
-          git pull origin master
-          sudo chown -R www-data:www-data /home/firya/Statibot/public
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSHKEY }}
+        port: ${{ secrets.PORT }}
+        script: whoami
