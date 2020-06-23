@@ -13,7 +13,7 @@ app.set("view engine", "hbs");
 app.use(express.static('static'));
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.send('Здесь ничего нет, уходите!');
 });
 
 app.post(`/bot${process.env.TELEGRAM_TOKEN}`, (req, res) => {
