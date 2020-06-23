@@ -1,5 +1,8 @@
 .env
 node_modules/
-public/uploads/
 info/
+public/node_modules/
+public/uploads/
 public/reports/
+public/static/reports/html/
+public/static/reports/pdf/
