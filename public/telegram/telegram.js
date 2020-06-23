@@ -26,6 +26,7 @@ const defaultAnswer = `Мы сообщили о вас куда следует`;
 const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, AddCron, RemoveCron, AddUser, RemoveUser];
 
 export const telegramBot = new TelegramBot(token);
+console.log(url)
 telegramBot.setWebHook(url);
 
 commandList.map((obj, i) => {
