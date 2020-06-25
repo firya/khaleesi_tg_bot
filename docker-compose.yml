@@ -43,18 +43,6 @@ services:
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
       - MAIL_USER=$MAIL_USER
       - MAIL_PASSWORD=$MAIL_PASSWORD
-  ngrok:
-    container_name: "${CONTAINER_NAME}_ngrock"
-    ports:
-      - "0.0.0.0:4040:4040"
-    image: wernight/ngrok
-    restart: unless-stopped
-    links:
-      - "node"
-    environment:
-      - NGROK_AUTH=1dMAb7pdFI8akRbTvv4Rbm8tKmL_68C5M3sARoftyZePmjBYV
-      - NGROK_REGION=eu
-      - NGROK_PORT=node:8080
 
 volumes:
   statibot_db_data:
