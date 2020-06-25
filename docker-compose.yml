@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile
     container_name: "${CONTAINER_NAME}_node"
     expose:
-      - 80
+      - "8080:80"
       - 443
     volumes:
       - ./public:/home/node/app
