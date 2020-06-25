@@ -8,7 +8,7 @@ class PDF {
   constructor() {
     this.token = process.env.PDF_CONVERTER;
     this.hookUrl = `report${this.token}`;
-    this.ngrockUrl = 'https://287bea6025a3.eu.ngrok.io';
+    this.ngrockUrl = 'https://a346cb2817e9.eu.ngrok.io';
 
     this.htmlPath = './static/reports/html';
     this.pdfPath = './static/reports/pdf';
@@ -160,14 +160,14 @@ class PDF {
         console.timeEnd("Generate PDF");
         resolve();
       } else {
-        this.url = `${this.url}?interval=${interval}&calcmethod=${method}`;
+        var documentUrl = `${this.url}?interval=${interval}&calcmethod=${method}`;
         request({
           method: "POST",
           url: this.baseUrl,
           qs: {
             access_key: this.token,
             page_size: 'A4',
-            document_url: this.url,
+            document_url: documentUrl,
             test: (process.env.NODE_ENV == 'development') ? '1' : false
           },
           headers: {

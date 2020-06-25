@@ -7,6 +7,7 @@ import PDF from './report/pdf.js';
 
 var CheckReportEveryMinute = new Cron.CronJob('*/60 * * * * *', async () => {
   var cronTasks = await DB.query('SELECT * FROM `bot_cron`');
+  console.log('run cron log')
 
   for (let i = 0; i < cronTasks.length; i++) {
     if (cronIntervalItsTime(cronTasks[i])) {
