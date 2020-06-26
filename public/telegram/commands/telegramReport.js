@@ -17,6 +17,7 @@ export default class TelegramReport {
 
   reply = (msg, match) => {
     if (match[1]) {
+      const command = match[0].substring(1, /\s/.exec(match[0]).index);
       const interval = parseDate(findDateAlias(match[1]));
       if (interval.from && interval.to) {
         return new Promise(async (resolve, reject) => {
@@ -46,6 +47,10 @@ export default class TelegramReport {
                     {
                       text: `Список сделок`,
                       callback_data: `/leads ${this.mainFunction} ${match[1]}`
+                    },
+                    {
+                      text: `Отправить на почту`,
+                      callback_data: `/mail ${command} ${match[1]}`
                     }
                   ]
                 ]

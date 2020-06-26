@@ -5,7 +5,7 @@ import { parseDate, findDateAlias, dateIntervalToUserView } from './utils.js';
 import Mail from './mail/mail.js';
 import PDF from './report/pdf.js';
 
-var CheckReportEveryMinute = new Cron.CronJob('*/60 * * * * *', async () => {
+var CheckReportEveryMinute = new Cron.CronJob('*/5 * * * * *', async () => {
   var cronTasks = await DB.query('SELECT * FROM `bot_cron`');
 
   for (let i = 0; i < cronTasks.length; i++) {

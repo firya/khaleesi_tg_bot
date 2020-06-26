@@ -4,6 +4,7 @@ import MeterAt from './commands/meterat.js';
 import CreatedAt from './commands/createdat.js';
 import ClosedAt from './commands/closedat.js';
 import Leads from './commands/leads.js';
+import MailReport from './commands/mail.js';
 
 import AddCron from './commands/addCron.js';
 import RemoveCron from './commands/removeCron.js';
@@ -20,10 +21,10 @@ import { defaultKeyboard } from './keyboards.js';
 
 const token = process.env.TELEGRAM_TOKEN;
 const hookUrl = `bot${token}`;
-const ngrockUrl = 'https://dbb5b480ce80.eu.ngrok.io'; // for local use
+const ngrockUrl = 'https://7fc43bcd59c2.eu.ngrok.io'; // for local use
 const url = (process.env.NODE_ENV == 'development') ? `${ngrockUrl}/${hookUrl}` : `https://${process.env.VIRTUAL_HOST}/${hookUrl}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
-const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, AddCron, RemoveCron, AddUser, RemoveUser];
+const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser];
 
 export const telegramBot = new TelegramBot(token);
 
@@ -49,6 +50,7 @@ commandList.map((obj, i) => {
 });
 
 export const telegramBotTrigger = (chatId, trigger) => {
+
   new Promise((resolve, reject) => {
     commandList.map((obj, i) => {
       obj.commands.map(async (command, j) => {

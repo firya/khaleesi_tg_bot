@@ -8,7 +8,7 @@ class PDF {
   constructor() {
     this.token = process.env.PDF_CONVERTER;
     this.hookUrl = `report${this.token}`;
-    this.ngrockUrl = 'https://a346cb2817e9.eu.ngrok.io';
+    this.ngrockUrl = 'https://7fc43bcd59c2.eu.ngrok.io';
 
     this.htmlPath = './static/reports/html';
     this.pdfPath = './static/reports/pdf';
@@ -32,10 +32,10 @@ class PDF {
     }
   }
 
-  generateHTML = (interval, method = 'closedat') => {
+  generateHTML = (interval, method = 'closedat', force = false) => {
     console.time("Generate HTML");
     return new Promise(async (resolve, reject) => {
-      if (fs.existsSync(`${this.htmlPath}/${method}_${interval}.html`)) {
+      if (!force && fs.existsSync(`${this.htmlPath}/${method}_${interval}.html`)) {
         console.timeEnd("Generate HTML");
         resolve();
       } else {
@@ -150,13 +150,13 @@ class PDF {
     });
   }
 
-  generatePDF = (interval, method = 'closedat') => {
+  generatePDF = (interval, method = 'closedat', force = false) => {
     console.time("Generate PDF");
 
     var that = this;
 
     return new Promise((resolve, reject) => {
-      if (fs.existsSync(`${this.pdfPath}/${method}_${interval}.pdf`)) {
+      if (!force && fs.existsSync(`${this.pdfPath}/${method}_${interval}.pdf`)) {
         console.timeEnd("Generate PDF");
         resolve();
       } else {
