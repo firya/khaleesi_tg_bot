@@ -20,7 +20,7 @@ import { defaultKeyboard } from './keyboards.js';
 
 const token = process.env.TELEGRAM_TOKEN;
 const hookUrl = `bot${token}`;
-const ngrockUrl = 'https://a346cb2817e9.eu.ngrok.io'; // for local use
+const ngrockUrl = 'https://dbb5b480ce80.eu.ngrok.io'; // for local use
 const url = (process.env.NODE_ENV == 'development') ? `${ngrockUrl}/${hookUrl}` : `https://${process.env.VIRTUAL_HOST}/${hookUrl}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
 const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, AddCron, RemoveCron, AddUser, RemoveUser];

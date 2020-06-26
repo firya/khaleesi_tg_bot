@@ -7,7 +7,6 @@ import PDF from './report/pdf.js';
 
 var CheckReportEveryMinute = new Cron.CronJob('*/60 * * * * *', async () => {
   var cronTasks = await DB.query('SELECT * FROM `bot_cron`');
-  console.log('run cron log')
 
   for (let i = 0; i < cronTasks.length; i++) {
     if (cronIntervalItsTime(cronTasks[i])) {
@@ -51,18 +50,16 @@ const cronIntervalItsTime = (cron) => {
   var cronSeconds = crontime[0] * 60 * 60 + crontime[1] * 60 + parseInt(crontime[2], 10);
   var cronLastRunTime = (cron.last_run) ? new Date(cron.last_run).getTime() / 1000 : false;
 
-  var cronTaskRunTime = 30 * 60; //30 minutes for cron task
-
   switch (cron.interval) {
     case 'everyday':
-      if ((!cronLastRunTime || (cronLastRunTime && cronLastRunTime + 60 * 60 * 24 - cronTaskRunTime < currentUnixTime)) && cronSeconds < currentSeconds) {
+      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getDate() < currentDate.getDate())) && cronSeconds <= currentSeconds) {
         return true;
       } else {
         return false;
       }
       break;
     case 'everymonthfirst':
-      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getMonth() < currentDate.getMonth())) && cronSeconds < currentSeconds) {
+      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getMonth() < currentDate.getMonth())) && cronSeconds <= currentSeconds) {
         return true;
       } else {
         return false;

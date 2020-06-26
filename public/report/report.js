@@ -139,7 +139,7 @@ export default class Report {
           this.getLeadInfo(leadIds, [{
             field: this.props.fieldIds.lead.meterDate,
             filter: 'not empty'
-          }]).then(res => {
+          }], true).then(res => {
             if (onlyCount) {
               resolve(res.length);
             } else {
@@ -161,6 +161,7 @@ export default class Report {
       cost: cost,
       total: res.length,
       totalSuccess: byStatus.success,
+      totalDecline: byStatus.decline,
       sale: this.calcSale(res),
       byStatus: byStatus.list,
       bySite: this.countLeadsByProp(res, 'site'),
@@ -190,6 +191,7 @@ export default class Report {
 
     return {
       success: (result[this.props.statusIds.success]) ? result[this.props.statusIds.success].count : 0,
+      decline: (result[this.props.statusIds.decline]) ? result[this.props.statusIds.decline].count : 0,
       list: Object.values(result).map(obj => obj)
     };
   }
@@ -221,7 +223,7 @@ export default class Report {
     return Object.values(result).map(obj => obj);
   }
 
-  getLeadInfo = async (ids, cfFilter = []) => {
+  getLeadInfo = async (ids, cfFilter = [], onlyClosed = false) => {
     var leads = await amocrm.getAllEntities('leads', {
       filter: {
         id: ids
@@ -235,16 +237,20 @@ export default class Report {
     leads = await this.getLeadsContacts(leads);
 
     var result = await Promise.all(leads.map(async lead => {
-      var allFilterDone = true;
+      var addLead = true;
 
       cfFilter.map(filter => {
         var fieldValue = this.findFieldValueById(lead.custom_fields_values, filter.field);
         if (filter.filter == 'not empty' && !fieldValue) {
-          allFilterDone = false;
+          addLead = false;
         }
       });
 
-      if (allFilterDone) {
+      if (onlyClosed && lead.status_id != this.props.statusIds.success && lead.status_id != this.props.statusIds.decline) {
+        addLead = false;
+      }
+
+      if (addLead) {
         var status = amocrm.findStatus(lead.status_id);
         var statusValue = 'wait';
         if (status.id == 142) {
