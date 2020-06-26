@@ -24,8 +24,8 @@ var CheckReportEveryMinute = new Cron.CronJob('*/5 * * * * *', async () => {
         var date = findDateAlias(matches[2]);
         var subject = dateIntervalToUserView(parseDate(date), 'Отчет за', false);
 
-        PDF.generateHTML(date, matches[1]).then(() => {
-          PDF.generatePDF(date, matches[1]).then(() => {
+        PDF.generateHTML(date, matches[1], true).then(() => {
+          PDF.generatePDF(date, matches[1], true).then(() => {
             Mail.send(mailto, subject, subject, [
               {
                 filename: `${matches[1]}_${date}.pdf`,
