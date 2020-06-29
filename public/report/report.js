@@ -234,13 +234,13 @@ export default class Report {
       with: 'contacts'
     });
 
-    leads = await this.getLeadsContacts(leads);
+    leads = await amocrm.getLeadsContacts(leads);
 
     var result = await Promise.all(leads.map(async lead => {
       var addLead = true;
 
       cfFilter.map(filter => {
-        var fieldValue = this.findFieldValueById(lead.custom_fields_values, filter.field);
+        var fieldValue = amocrm.findFieldValueById(lead.custom_fields_values, filter.field);
         if (filter.filter == 'not empty' && !fieldValue) {
           addLead = false;
         }
@@ -266,15 +266,15 @@ export default class Report {
 
         var user = await amocrm.getUserData(lead.responsible_user_id);
         var contactName = (lead.contact) ? lead.contact.name : '';
-        var phones = (lead.contact) ? this.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, formatPhone) : [];
-        var site = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
+        var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, formatPhone) : [];
+        var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
         var createdAt = timestampToDate(lead.created_at);
-        var meterAddress = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
-        var meterDate = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterDate, false, timestampToDate);
-        var meterTime = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterTime);
-        var meterMaster = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterMaster);
-        var meterInfo = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterInfo);
-        var itemType = this.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.itemType);
+        var meterAddress = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
+        var meterDate = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterDate, false, timestampToDate);
+        var meterTime = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterTime);
+        var meterMaster = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterMaster);
+        var meterInfo = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterInfo);
+        var itemType = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.itemType);
         var userName = user.name;
         var price = lead.price;
 
@@ -306,47 +306,5 @@ export default class Report {
     });
 
     return result;
-  }
-
-  getLeadsContacts = (leads) => {
-    return new Promise(async (resolve, reject) => {
-      var contactIds = leads.map(lead => {
-        return (lead['_embedded'].contacts.length) ? lead['_embedded'].contacts[0].id : null;
-      });
-
-      var contacts = await amocrm.getAllEntities('contacts', {
-        filter: {
-          id: contactIds
-        }
-      }).catch(err => console.log(`Не удалось получить контакт ${lead['_embedded'].contacts[0].id}: ${err}`));
-
-      leads.map((lead, j) => {
-        if (lead['_embedded'].contacts.length) {
-          for (let i = 0; i < contacts.length; i++) {
-            if (lead['_embedded'].contacts[0].id == contacts[i].id) {
-              leads[j].contact = contacts[i];
-              break;
-            }
-          }
-        } else {
-          leads[j].contact = {}
-        }
-      });
-
-      resolve(leads);
-    });
-  }
-
-  findFieldValueById = (fields, id, array = false, modifier = value => value) => {
-    if (fields) {
-      for (let i = 0; i < fields.length; i++) {
-        if (fields[i].field_id == id) {
-          return (!array) ? modifier(fields[i].values[0].value) : fields[i].values.map(value => modifier(value.value));
-        }
-      }
-
-    } else {
-      return [];
-    }
   }
 }

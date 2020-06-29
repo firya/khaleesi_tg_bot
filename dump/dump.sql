@@ -23,19 +23,6 @@ CREATE TABLE `bot_cron` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `caller_queue`;
-CREATE TABLE `caller_queue` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `date_add` datetime DEFAULT NULL,
-  `last_try` datetime DEFAULT NULL,
-  `caller` varchar(11) DEFAULT NULL,
-  `visit_id` int(11) DEFAULT NULL,
-  `marker` text,
-  `domain` varchar(32) DEFAULT NULL,
-  `metrika_id` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `bot_orders_archive`;
 CREATE TABLE `bot_orders_archive` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

@@ -109,7 +109,7 @@ class AmoCRM {
         if (err) {
           return reject(err);
         }
-        if (res.statusCode != 200) {
+        if (res.statusCode != 200 && res.statusCode != 201) {
           return reject({
             code: res.statusCode,
             message: res.statusMessage
@@ -196,10 +196,20 @@ class AmoCRM {
   getStatuses = () => {
     return new Promise((resolve, reject) => {
       this.api('GET', `/api/v4/leads/pipelines/1645597/statuses`, {}, {}, {}, true).then((res) => {
-        console.log("get status list")
         this.statuses = res['_embedded'].statuses;
         resolve();
       }).catch(err => console.log(`Не удалось получить статусы. Error code: ${err.code}`));
+    });
+  }
+
+  setWebhook = (url, settings) => {
+    return new Promise((resolve, reject) => {
+      this.api('POST', `/api/v4/webhooks`, {}, {
+        destination: url,
+        settings: settings
+      }).then((res) => {
+        resolve();
+      }).catch(err => console.log(`Не удалось создать вебхук. Error code: ${err.code}`));
     });
   }
 
@@ -209,6 +219,22 @@ class AmoCRM {
         return this.statuses[i];
       }
     }
+  }
+  // doesnt work
+  updateEntities = (entity, data) => {
+    return new Promise((resolve, reject) => {
+      this.api('POST', `/api/v4/${entity}`, {}, data).then((res) => {
+        resolve(res);
+      }).catch(err => { console.log(err); console.log(`Не удалось обновить сделку. Error code: ${err.code}`) });
+    });
+  }
+
+  updateEntity = (entity, id, data) => {
+    return new Promise((resolve, reject) => {
+      this.api('PATCH', `/api/v4/${entity}/${id}`, {}, data).then((res) => {
+        resolve(res);
+      }).catch(err => { console.log(err); console.log(`Не удалось обновить сделку. Error code: ${err.code}`) });
+    });
   }
 
   getAllEntities = (entity, params = {}, count = 0, allData = [], headers = {}) => {
@@ -239,6 +265,48 @@ class AmoCRM {
           resolve(allData);
         }
       }).catch(err => { console.log(`get ${entity}, ${params.filter.id}. Error code: ${err.code}`); resolve(allData); });
+    });
+  }
+
+  findFieldValueById = (fields, id, array = false, modifier = value => value) => {
+    if (fields) {
+      for (let i = 0; i < fields.length; i++) {
+        if (fields[i].field_id == id) {
+          return (!array) ? modifier(fields[i].values[0].value) : fields[i].values.map(value => modifier(value.value));
+        }
+      }
+
+    } else {
+      return [];
+    }
+  }
+
+  getLeadsContacts = (leads) => {
+    return new Promise(async (resolve, reject) => {
+      var contactIds = leads.map(lead => {
+        return (lead['_embedded'].contacts.length) ? lead['_embedded'].contacts[0].id : null;
+      });
+
+      var contacts = await this.getAllEntities('contacts', {
+        filter: {
+          id: contactIds
+        }
+      }).catch(err => console.log(`Не удалось получить контакт ${lead['_embedded'].contacts[0].id}: ${err}`));
+
+      leads.map((lead, j) => {
+        if (lead['_embedded'].contacts.length) {
+          for (let i = 0; i < contacts.length; i++) {
+            if (lead['_embedded'].contacts[0].id == contacts[i].id) {
+              leads[j].contact = contacts[i];
+              break;
+            }
+          }
+        } else {
+          leads[j].contact = {}
+        }
+      });
+
+      resolve(leads);
     });
   }
 }

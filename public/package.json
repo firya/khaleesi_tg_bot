@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "cron": "^1.8.2",
+    "csv-writer": "^1.6.0",
+    "dadata": "0.0.3",
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "mysql2": "^2.1.0",

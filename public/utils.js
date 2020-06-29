@@ -30,6 +30,12 @@ export const parseDate = (strDate, UTC = false) => {
   };
 }
 
+export const dateForRoistat = (date) => {
+  date = date || new Date();
+
+  return `${date.getFullYear()}-${leftPad(date.getMonth() + 1, 2)}-${leftPad(date.getDate(), 2)}T${leftPad(date.getHours(), 2)}:${leftPad(date.getMinutes(), 2)}:${leftPad(date.getSeconds(), 2)}+0000`;
+}
+
 export const dateToTimestamp = (strDate, UTC = false, to = false) => {
   let dateArray = strDate.split(".");
 
@@ -60,8 +66,18 @@ export const timestampToDate = (timestamp, UTC = false, time = false) => {
   return result;
 }
 
+export const clearPhone = (str) => {
+  var result = str.replace(/[^\d]/g, '');
+  if (result.length == 11) {
+    result = `7${result.substring(1)}`;
+  } else if (result.length == 10) {
+    result = `7${result}`;
+  }
+  return result;
+}
+
 export const formatPhone = (str) => {
-  var phone = str.replace(/[^\d]/g, '');
+  var phone = clearPhone(str);
 
   if (phone.length != 11) {
     return str;

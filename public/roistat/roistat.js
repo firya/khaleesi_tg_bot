@@ -1,4 +1,5 @@
 import request from 'request';
+import { dateForRoistat } from '../utils.js';
 
 class Roistat {
   constructor() {
@@ -30,6 +31,50 @@ class Roistat {
     });
   }
 
+  getCallerByPhone = (phone) => {
+    return new Promise((resolve, reject) => {
+      this.api("POST", 'project/calltracking/call/list', {}, {
+        "filters": [
+          [
+            "caller",
+            "=",
+            phone
+          ]
+        ],
+        "limit": 1,
+        "offset": 0,
+        "extend": ["visit"]
+      }).then(res => {
+        var result = {};
+        result.roistat_id = (res.data[0]) ? res.data[0].visit_id : null;
+        result.metrika_id = (res.data[0]?.visit?.metrika_client_id) ? res.data[0].visit.metrika_client_id : null;
+        resolve(result);
+      })
+    });
+  }
+
+  addCall = (data) => {
+    return new Promise((resolve, reject) => {
+      this.api("POST", 'project/phone-call', {},
+        {
+          "callee": data.callee,
+          "caller": data.caller,
+          "date": dateForRoistat(),
+          "duration": 20,
+          "order_id": null,
+          "save_to_crm": "0",
+          "status": "ANSWER",
+          "visit_id": data.roistat,
+          "comment": "",
+          "answer_duration": 15
+        }
+      ).then(res => {
+        console.log(res)
+        resolve();
+      })
+    });
+  }
+
   api = async (method, name, query = {}, params = {}, headers = {}) => {
     return new Promise((resolve, reject) => {
       query.type = 'json';
@@ -39,8 +84,7 @@ class Roistat {
         method: method,
         json: params,
         headers: {
-          ...headers,
-          'Cookie': this.cookies
+          ...headers
         }
       }, (err, res, body) => {
         if (err) {

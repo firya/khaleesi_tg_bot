@@ -17,12 +17,12 @@ import Help from './commands/help.js';
 
 import DB from '../db/db.js';
 
+import { hostURL } from '../dev.js';
+
 import { defaultKeyboard } from './keyboards.js';
 
 const token = process.env.TELEGRAM_TOKEN;
-const hookUrl = `bot${token}`;
-const ngrockUrl = 'https://7fc43bcd59c2.eu.ngrok.io'; // for local use
-const url = (process.env.NODE_ENV == 'development') ? `${ngrockUrl}/${hookUrl}` : `https://${process.env.VIRTUAL_HOST}/${hookUrl}`;
+const url = `${hostURL}/bot${token}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
 const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser];
 

@@ -2,19 +2,19 @@ import fs from 'fs';
 import request from 'request';
 import Handlebars from 'handlebars';
 import Report from './report.js';
+
+import { hostURL } from '../dev.js';
 import { parseDate, dateIntervalToUserView, calcPercent, priceFormat } from '../utils.js';
 
 class PDF {
   constructor() {
     this.token = process.env.PDF_CONVERTER;
-    this.hookUrl = `report${this.token}`;
-    this.ngrockUrl = 'https://7fc43bcd59c2.eu.ngrok.io';
 
     this.htmlPath = './static/reports/html';
     this.pdfPath = './static/reports/pdf';
 
     this.baseUrl = 'http://api.pdflayer.com/api/convert';
-    this.url = (process.env.NODE_ENV == 'development') ? `${this.ngrockUrl}/${this.hookUrl}` : `https://${process.env.VIRTUAL_HOST}/${this.hookUrl}`;
+    this.url = `${hostURL}/report${this.token}`;
 
     this.methodAliasList = {
       'createdat': {

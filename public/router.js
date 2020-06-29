@@ -4,10 +4,14 @@ import url from 'url';
 
 import { telegramBot } from './telegram/telegram.js';
 
+import LeadHook from './amocrm/leadHook.js';
+import MetrikaHook from './amocrm/metrikaHook.js';
+
 const __dirname = path.resolve(path.dirname(''));
 
 var app = express();
 
+app.use(express.urlencoded());
 app.use(express.json());
 app.set("view engine", "hbs");
 app.use(express.static('static'));
@@ -26,6 +30,21 @@ app.use(`/report${process.env.PDF_CONVERTER}`, async (req, res) => {
   res.sendFile(`static/reports/html/${queryParams.calcmethod}_${queryParams.interval}.html`, {
     root: path.join(__dirname, './')
   })
+});
+
+app.use(`/amocrm_webhook_lead_status_meter`, async (req, res) => {
+  LeadHook.leadMeterWebhook(req.body)
+  res.sendStatus(200);
+});
+
+app.use(`/amocrm_webhook_metrika_meter`, async (req, res) => {
+  MetrikaHook.metrikaMeterWebHook(req.body)
+  res.sendStatus(200);
+});
+
+app.use(`/amocrm_webhook_metrika_sale`, async (req, res) => {
+  MetrikaHook.metrikaSaleWebHook(req.body)
+  res.sendStatus(200);
 });
 
 app.listen(8080, function () {
