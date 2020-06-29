@@ -237,6 +237,19 @@ class AmoCRM {
     });
   }
 
+  addNote = (entity, id, note) => {
+    return new Promise((resolve, reject) => {
+      this.api('POST', `/api/v4/${entity}/${id}/notes`, {}, [{
+        "note_type": "common",
+        "params": {
+          "text": note
+        }
+      }]).then((res) => {
+        resolve(res);
+      }).catch(err => { console.log(err); console.log(`Не удалось создать заметку. Error code: ${err.code}`) });
+    });
+  }
+
   getAllEntities = (entity, params = {}, count = 0, allData = [], headers = {}) => {
     params.limit = (!count || count - allData.length > this.getFunctions[entity].limit) ? this.getFunctions[entity].limit : count - allData.length;
 

@@ -6,6 +6,7 @@ import { telegramBot } from './telegram/telegram.js';
 
 import LeadHook from './amocrm/leadHook.js';
 import MetrikaHook from './amocrm/metrikaHook.js';
+import RoistatHook from './roistat/roistatHook.js';
 
 const __dirname = path.resolve(path.dirname(''));
 
@@ -44,6 +45,11 @@ app.use(`/amocrm_webhook_metrika_meter`, async (req, res) => {
 
 app.use(`/amocrm_webhook_metrika_sale`, async (req, res) => {
   MetrikaHook.metrikaSaleWebHook(req.body)
+  res.sendStatus(200);
+});
+
+app.use(`/roistat_webhook`, async (req, res) => {
+  RoistatHook.roistatNewCallHook(req.body)
   res.sendStatus(200);
 });
 
