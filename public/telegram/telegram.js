@@ -50,7 +50,6 @@ commandList.map((obj, i) => {
 });
 
 export const telegramBotTrigger = (chatId, trigger) => {
-
   new Promise((resolve, reject) => {
     commandList.map((obj, i) => {
       obj.commands.map(async (command, j) => {

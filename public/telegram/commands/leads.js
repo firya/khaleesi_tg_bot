@@ -4,7 +4,7 @@ import Report from '../../report/report.js';
 
 class Leads {
   constructor() {
-    this.commands = [/\/leads[\s]?(.+)[\s]([\d\.]+)?/, /^Сделки[\s]?(.+)[\s]([\d\.]+)?/, /^📖 Сделки[\s]?(.+)[\s]([\d\.]+)?/];
+    this.commands = [/\/leads[\s]?(.+)[\s](.+)?/, /^Сделки[\s]?(.+)[\s](.+)?/, /^📖 Сделки[\s]?(.+)[\s](.+)?/];
     this.examples = [`/leads`, 'Сделки', ' 📖 Сделки'];
   }
 
