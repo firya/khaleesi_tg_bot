@@ -146,7 +146,7 @@ export const dateIntervalToUserView = (interval, prefix = 'Отчет за', mar
 }
 
 export const calcPercent = (value, total) => {
-  return Math.round((value / total) * 10000) / 100;
+  return (total != 0) ? Math.round((value / total) * 10000) / 100 : '-';
 }
 
 export const priceFormat = (value) => {
