@@ -2,6 +2,9 @@ import mysql from 'mysql2';
 
 class DB {
   constructor() {
+  }
+
+  connect = () => {
     this.connection = mysql.createConnection({
       host: "statibot_maksimlebedev_db",
       user: process.env.MYSQL_USER,
@@ -19,7 +22,11 @@ class DB {
     });
   }
 
-  query = (query) => {
+  query = async (query) => {
+    if (!this.connection) {
+      await this.connect();
+    }
+
     return new Promise((resolve, reject) => {
       this.connection.query(
         query,
