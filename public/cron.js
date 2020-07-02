@@ -52,14 +52,14 @@ const cronIntervalItsTime = (cron) => {
 
   switch (cron.interval) {
     case 'everyday':
-      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getDate() < currentDate.getDate())) && cronSeconds <= currentSeconds) {
+      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getDate() != currentDate.getDate())) && cronSeconds <= currentSeconds) {
         return true;
       } else {
         return false;
       }
       break;
     case 'everymonthfirst':
-      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getMonth() < currentDate.getMonth())) && cronSeconds <= currentSeconds) {
+      if ((!cronLastRunTime || (cronLastRunTime && new Date(cron.last_run).getMonth() != currentDate.getMonth())) && cronSeconds <= currentSeconds) {
         return true;
       } else {
         return false;
