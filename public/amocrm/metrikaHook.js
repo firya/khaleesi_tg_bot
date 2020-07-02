@@ -22,7 +22,7 @@ class MetrikaHook {
 
       if (metrikaId) {
         const headers = ['ClientId', 'Target', 'DateTime', 'Price', 'Currency'];
-        const data = [[metrikaId, 'METER', Math.round(new Date().getTime() / 1000), price, 'RUB']];
+        const data = [[metrikaId, 'SELL', Math.round(new Date().getTime() / 1000), price, 'RUB']];
 
         metrika.postCSVData(headers, data).then(res => console.log(res));
       }
