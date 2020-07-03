@@ -45,9 +45,34 @@ class LeadHook {
           roistatResult = await roistat.getCallerByPhone(clearPhone(phone));
         }
 
-        if (roistatResult) {
+        if (roistatResult.roistat_id || roistatResult.metrika_id) {
           roistatId = roistatId || roistatResult.roistat_id;
           metrikaId = metrikaId || roistatResult.metrika_id;
+        }
+
+        if (!roistatId || !metrikaId) {
+          for (let i = 0; i < phones.length; i++) {
+            var prevLeads = await amocrm.getAllEntities('leads', {
+              query: phones[i],
+              order: {
+                created_at: 'desc'
+              }
+            });
+
+            for (let j = 0; j < prevLeads.length; j++) {
+              if (!roistatId) {
+                roistatId = amocrm.findFieldValueById(prevLeads[j].custom_fields_values, this.props.fieldIds.lead.roistat);
+              }
+
+              if (!metrikaId) {
+                metrikaId = amocrm.findFieldValueById(prevLeads[j].custom_fields_values, this.props.fieldIds.lead.metrikaId);
+              }
+
+              if (roistatId && metrikaId) {
+                break;
+              }
+            }
+          }
         }
       }
 
