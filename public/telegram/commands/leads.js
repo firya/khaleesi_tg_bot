@@ -1,5 +1,5 @@
 import { inlineDayKeyboard } from '../keyboards.js';
-import { parseDate, findDateAlias } from '../../utils.js';
+import { parseDate, findDateAlias, joinReplayByMaxLength } from '../../utils.js';
 import Report from '../../report/report.js';
 
 class Leads {
@@ -22,23 +22,27 @@ class Leads {
 
           var reply = [];
           if (data.data) {
-            reply.push(data.data.map((lead, i) => {
-              return [
+            data.data.map((lead, i) => {
+              var leadStatusMark = (lead.status.id == 142) ? "✅" : (lead.status.id == 143) ? "❌" : "";
+
+              reply.push([
                 `${(i + 1)}. Сделка ${lead.itemType}: <a href='https://universalstal.amocrm.ru/leads/detail/${lead.id}'>${lead.id}</a> (${lead.createdAt})`,
                 `Сайт: ${lead.site}`,
-                `Статус: ${lead.status.name}`,
+                `Статус: ${lead.status.name} ${leadStatusMark}`,
                 `Замер: ${lead.meterDate} (${lead.meterTime})`,
                 `Замерщик: ${lead.meterMaster}`,
                 `Адрес: ${lead.address}`,
                 `Клиент: ${lead.contact.name}, ${lead.contact.phones.map(phone => phone).join(', ')}`,
                 `Коментарий: ${lead.meterInfo}`
-              ].join('\n')
-            }).join('\n\n'));
+              ].join('\n'));
+            });
           } else {
             reply.push(`Нет информации`)
           }
 
-          resolve({ reply: reply.join('\n') });
+          reply = joinReplayByMaxLength(reply);
+
+          resolve({ reply: reply });
         });
       } else {
         return { reply: `Неверный формат даты: ${match[2]}` };

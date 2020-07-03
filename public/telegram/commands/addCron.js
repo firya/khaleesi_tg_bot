@@ -45,7 +45,7 @@ class AddCron {
 
       await DB.query(`INSERT INTO bot_cron VALUES(0, '${user[0].id}', '${match[3]}', '${match[2]}', '1970-01-01 00:00:00', '/${match[4]} ${match[5]}', '${match[1]}')`);
 
-      return { reply: `Отчет добавлен` };
+      return { reply: [`Отчет добавлен`] };
     } else if (match[1] && match[2] && match[3] && match[4]) {
       var usersKeyboard = Object.keys(this.dateAliasList).map((key, i) => {
         return {
@@ -59,7 +59,7 @@ class AddCron {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `За какой период?`, options: opts };
+      return { reply: [`За какой период?`], options: opts };
     } else if (match[1] && match[2] && match[3]) {
       var usersKeyboard = Object.keys(this.calcMethodList).map((key, i) => {
         return {
@@ -73,14 +73,14 @@ class AddCron {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `Какой отчет нужно присылать?`, options: opts };
+      return { reply: [`Какой отчет нужно присылать?`], options: opts };
     } else if (match[1] && match[2]) {
       var opts = {
         reply_markup: JSON.stringify({
           inline_keyboard: inlineTimeKeyboard({ callback_data: `/addcron ${match[1]} ${match[2]}` })
         })
       };
-      return { reply: `В какое время?`, options: opts };
+      return { reply: [`В какое время?`], options: opts };
     } else if (match[1]) {
       var usersKeyboard = Object.keys(this.intervalList).map((key, i) => {
         return {
@@ -94,7 +94,7 @@ class AddCron {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `Когда нужно присылать отчет?`, options: opts };
+      return { reply: [`Когда нужно присылать отчет?`], options: opts };
     } else {
       var usersKeyboard = Object.keys(this.methodList).map((key, i) => {
         return {
@@ -108,7 +108,7 @@ class AddCron {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `Выберите способ получения отчета`, options: opts };
+      return { reply: [`Выберите способ получения отчета`], options: opts };
     }
   }
 }

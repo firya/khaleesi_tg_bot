@@ -61,10 +61,10 @@ export default class TelegramReport {
             reply.push(`Нет информации`)
           }
 
-          resolve({ reply: reply.join('\n'), options: opts });
+          resolve({ reply: [reply.join('\n')], options: opts });
         })
       } else {
-        return { reply: `Неверный формат даты: ${match[1]}` };
+        return { reply: [`Неверный формат даты: ${match[1]}`] };
       }
     } else {
       var opts = {};
@@ -75,7 +75,7 @@ export default class TelegramReport {
           })
         };
       }
-      return { reply: `Выберите интервал`, options: opts };
+      return { reply: [`Выберите интервал`], options: opts };
     }
   }
 }

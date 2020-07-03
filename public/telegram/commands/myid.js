@@ -10,7 +10,7 @@ class MyID {
 
   reply = (msg, match) => {
     const chatId = msg.chat.id;
-    return { reply: `Ваш ID: ${chatId}` };
+    return { reply: [`Ваш ID: ${chatId}`] };
   }
 }
 

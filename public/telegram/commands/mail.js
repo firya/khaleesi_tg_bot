@@ -36,12 +36,12 @@ class MailReport {
             path: `./static/reports/pdf/${command}_${date}.pdf`
           }
         ]);
-        return { reply: `Отчет отправлен` };
+        return { reply: [`Отчет отправлен`] };
       } else {
-        return { reply: `Не указан email` };
+        return { reply: [`Не указан email`] };
       }
     } else {
-      return { reply: `Укажите два параметра, например /mail createdat 01.01.2020` };
+      return { reply: [`Укажите два параметра, например /mail createdat 01.01.2020`] };
     }
   }
 }

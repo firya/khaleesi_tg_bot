@@ -38,9 +38,11 @@ commandList.map((obj, i) => {
       if (permission) {
         const { reply, options } = await obj.reply(msg, match);
 
-        telegramBot.sendMessage(chatId, reply, {
-          ...options,
-          parse_mode: 'HTML'
+        reply.map(replyMessage => {
+          telegramBot.sendMessage(chatId, replyMessage, {
+            ...options,
+            parse_mode: 'HTML'
+          });
         });
       } else {
         telegramBot.sendMessage(chatId, defaultAnswer);
@@ -56,9 +58,12 @@ export const telegramBotTrigger = (chatId, trigger) => {
         var match = trigger.match(command);
         if (match) {
           const { reply, options } = await obj.reply({}, match);
-          telegramBot.sendMessage(chatId, reply, {
-            ...options,
-            parse_mode: 'HTML'
+
+          reply.map(replyMessage => {
+            telegramBot.sendMessage(chatId, replyMessage, {
+              ...options,
+              parse_mode: 'HTML'
+            });
           });
           resolve();
         }
@@ -79,9 +84,12 @@ telegramBot.on('callback_query', function onCallbackQuery(callbackQuery) {
         var permission = await checkPermission(msg);
         if (permission) {
           const { reply, options } = await obj.reply(msg, match);
-          telegramBot.sendMessage(chatId, reply, {
-            ...options,
-            parse_mode: 'HTML'
+
+          reply.map(replyMessage => {
+            telegramBot.sendMessage(chatId, replyMessage, {
+              ...options,
+              parse_mode: 'HTML'
+            });
           });
         } else {
           telegramBot.sendMessage(chatId, defaultAnswer);
@@ -99,12 +107,15 @@ telegramBot.onText(/\/help/, async (msg, match) => {
 
   const { reply } = Help.reply(commandList, isAdmin);
   var permission = await checkPermission(msg);
+
   if (permission) {
-    telegramBot.sendMessage(chatId, reply, {
-      parse_mode: 'HTML',
-      reply_markup: JSON.stringify({
-        keyboard: defaultKeyboard(isAdmin)
-      })
+    reply.map(replyMessage => {
+      telegramBot.sendMessage(chatId, replyMessage, {
+        parse_mode: 'HTML',
+        reply_markup: JSON.stringify({
+          keyboard: defaultKeyboard(isAdmin)
+        })
+      });
     });
   } else {
     telegramBot.sendMessage(chatId, defaultAnswer);

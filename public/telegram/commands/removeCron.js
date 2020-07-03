@@ -40,7 +40,7 @@ class RemoveCron {
     if (match[1]) {
       await DB.query(`DELETE FROM bot_cron WHERE id='${match[1]}'`);
 
-      return { reply: `Отчет удален` };
+      return { reply: [`Отчет удален`] };
     } else {
       var user = await DB.query(`SELECT * FROM bot_accounts WHERE chat_id='${chatId}'`);
       var cronTasks = await DB.query(`SELECT * FROM bot_cron WHERE user_id='${user[0].id}'`);
@@ -59,7 +59,7 @@ class RemoveCron {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `Выберите какой отчет удалить`, options: opts };
+      return { reply: [`Выберите какой отчет удалить`], options: opts };
     }
   }
 }

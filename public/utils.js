@@ -173,3 +173,18 @@ export const findDateAlias = (date) => {
 
   return aliasList[date] ? aliasList[date] : date;
 }
+
+export const joinReplayByMaxLength = (replayArray, maxLength = 4096) => {
+  var result = [];
+
+  replayArray.map(replay => {
+    if (!result.length || result[result.length - 1].length + replay.length > maxLength - 4) {
+      result.push('');
+    } else if (result[result.length - 1].length) {
+      result[result.length - 1] += '\n\n';
+    }
+    result[result.length - 1] += replay;
+  });
+
+  return result;
+}

@@ -3,8 +3,8 @@ import { listToMatrix } from '../../utils.js';
 
 class RemoveUser {
   constructor() {
-    this.commands = [/\/removeuser[\s]?([\d]+)?$/, /^\/Удалить пользователя[\s]?([\d]+)?$/, /^💀 Удалить пользователя[\s]?([\d]+)?$/];
-    this.examples = ['/removeuser', 'Удалить пользователя', '💀 Удалить пользователя'];
+    this.commands = [/\/removeuser[\s]?([\d]+)?$/, /^\/Remove User[\s]?([\d]+)?$/, /^💀 Remove User[\s]?([\d]+)?$/];
+    this.examples = ['/removeuser', 'Remove User', '💀 Remove User'];
     this.onlyAdmin = true;
   }
 
@@ -17,7 +17,7 @@ class RemoveUser {
     if (match[1]) {
       await DB.query(`DELETE FROM bot_accounts WHERE id='${match[1]}'`);
 
-      return { reply: `Пользователь удален` };
+      return { reply: [`Пользователь удален`] };
     } else {
       var userList = await DB.query(`SELECT * FROM bot_accounts WHERE chat_id!='${chatId}'`);
 
@@ -35,7 +35,7 @@ class RemoveUser {
           inline_keyboard: usersKeyboard
         })
       };
-      return { reply: `Выберите пользователя`, options: opts };
+      return { reply: [`Выберите пользователя`], options: opts };
     }
   }
 }

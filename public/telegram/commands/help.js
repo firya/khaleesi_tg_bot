@@ -18,7 +18,7 @@ class Help {
     reply.push('— 01.01.2020');
     reply.push('— 01.2020');
 
-    return { reply: reply.join("\n") };
+    return { reply: [reply.join("\n")] };
   }
 }
 
