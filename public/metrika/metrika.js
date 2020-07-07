@@ -5,13 +5,12 @@ import fs from 'fs';
 class Metrika {
   constructor() {
     this.url = 'https://api-metrika.yandex.net';
-    this.counterId = process.env.METRIKA_COUNTER_ID;
     this.token = process.env.METRIKA_TOKEN;
     this.version = 1;
     this.pathToCSV = 'static/metrika'
   }
 
-  postCSVData = (headers, data) => {
+  postCSVData = (counterId, headers, data) => {
     return new Promise((resolve, reject) => {
       var currentTime = Math.round(new Date().getTime() / 1000);
 
@@ -38,17 +37,17 @@ class Metrika {
           ]
         };
 
-        this.api('POST', 'offline_conversions/upload?client_id_type=CLIENT_ID', formData)
+        this.api('POST', counterId, 'offline_conversions/upload?client_id_type=CLIENT_ID', formData)
           .then(res => console.log(res))
           .catch(err => console.log(err));
       });
     });
   }
 
-  api = async (method, name, formData, headers = {}) => {
+  api = async (method, counterId, name, formData, headers = {}) => {
     return new Promise((resolve, reject) => {
       request({
-        url: `${this.url}/management/v${this.version}/counter/${this.counterId}/${name}`,
+        url: `${this.url}/management/v${this.version}/counter/${counterId}/${name}`,
         method: method,
         formData: formData,
         headers: {

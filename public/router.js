@@ -5,6 +5,7 @@ import url from 'url';
 import { telegramBot } from './telegram/telegram.js';
 
 import LeadHook from './amocrm/leadHook.js';
+import CreateHook from './amocrm/createHook.js';
 import MetrikaHook from './amocrm/metrikaHook.js';
 import RoistatHook from './roistat/roistatHook.js';
 
@@ -35,6 +36,11 @@ app.use(`/report${process.env.PDF_CONVERTER}`, async (req, res) => {
 
 app.use(`/amocrm_webhook_lead_status_meter`, async (req, res) => {
   LeadHook.leadMeterWebhook(req.body)
+  res.sendStatus(200);
+});
+
+app.use(`/amocrm_webhook_lead_created`, async (req, res) => {
+  CreateHook.createWebhook(req.body)
   res.sendStatus(200);
 });
 

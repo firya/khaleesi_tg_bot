@@ -30,10 +30,14 @@ export default class TelegramReport {
           if (data.data) {
             reply.push(`${dateIntervalToUserView(interval, this.prefixText)}`);
             reply.push(`Расход: ${priceFormat(data.cost)}`);
-            reply.push(`Доход: ${priceFormat(data.sale)} (средний чек: ${priceFormat(Math.round(data.sale / data.totalSuccess))})`);
+            if (data.sale) {
+              reply.push(`Доход: ${priceFormat(data.sale)} (средний чек: ${priceFormat(Math.round(data.sale / data.totalSuccess))})`);
+            }
             reply.push(`Замеров всего: ${data.total} (${priceFormat(data.cost / data.total)}/замер)`);
-            reply.push(`Продаж всего: ${data.totalSuccess} (${priceFormat(data.cost / data.totalSuccess)}/продажа)`);
-            reply.push(`Съём: ${calcPercent(data.totalSuccess, data.totalDecline + data.totalSuccess)}%`);
+            if (data.totalSuccess) {
+              reply.push(`Продаж всего: ${data.totalSuccess} (${priceFormat(data.cost / data.totalSuccess)}/продажа)`);
+              reply.push(`Съём: ${calcPercent(data.totalSuccess, data.totalDecline + data.totalSuccess)}%`);
+            }
             reply.push(`<b>По статусам</b>:`);
             reply.push(data.byStatus.map(status => `${status.name}: ${status.count} (${calcPercent(status.count, data.total)}%)`).join('\n'));
             reply.push(`<b>По сайтам</b>:`);

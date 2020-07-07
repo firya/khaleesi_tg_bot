@@ -20,11 +20,15 @@ class MetrikaHook {
       var metrikaId = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.metrikaId);
       var price = lead.price.toFixed(2);
 
+      var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
+      site = (site) ? site : Object.keys(this.props.counterIds)[0];
+      const counterId = this.props.counterIds[site];
+
       if (metrikaId) {
         const headers = ['ClientId', 'Target', 'DateTime', 'Price', 'Currency'];
         const data = [[metrikaId, 'SELL', Math.round(new Date().getTime() / 1000), price, 'RUB']];
 
-        metrika.postCSVData(headers, data).then(res => console.log(res));
+        metrika.postCSVData(counterId, headers, data).then(res => console.log(res));
       }
     }
   }
@@ -41,11 +45,15 @@ class MetrikaHook {
 
       var metrikaId = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.metrikaId);
 
+      var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
+      site = (site) ? site : Object.keys(this.props.counterIds)[0];
+      const counterId = this.props.counterIds[site];
+
       if (metrikaId) {
         const headers = ['ClientId', 'Target', 'DateTime'];
         const data = [[metrikaId, 'METER', Math.round(new Date().getTime() / 1000)]];
 
-        metrika.postCSVData(headers, data).then(res => console.log(res));
+        metrika.postCSVData(counterId, headers, data).then(res => console.log(res));
       }
     }
   }

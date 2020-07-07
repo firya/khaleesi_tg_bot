@@ -38,12 +38,10 @@ commandList.map((obj, i) => {
       if (permission) {
         const { reply, options } = await obj.reply(msg, match);
 
-        reply.map(replyMessage => {
-          telegramBot.sendMessage(chatId, replyMessage, {
-            ...options,
-            parse_mode: 'HTML'
-          });
-        });
+        telegramBotSendMessagesInOrder(chatId, {
+          ...options,
+          parse_mode: 'HTML'
+        }, reply);
       } else {
         telegramBot.sendMessage(chatId, defaultAnswer);
       }
@@ -59,12 +57,10 @@ export const telegramBotTrigger = (chatId, trigger) => {
         if (match) {
           const { reply, options } = await obj.reply({}, match);
 
-          reply.map(replyMessage => {
-            telegramBot.sendMessage(chatId, replyMessage, {
-              ...options,
-              parse_mode: 'HTML'
-            });
-          });
+          telegramBotSendMessagesInOrder(chatId, {
+            ...options,
+            parse_mode: 'HTML'
+          }, reply);
           resolve();
         }
       });
@@ -85,12 +81,10 @@ telegramBot.on('callback_query', function onCallbackQuery(callbackQuery) {
         if (permission) {
           const { reply, options } = await obj.reply(msg, match);
 
-          reply.map(replyMessage => {
-            telegramBot.sendMessage(chatId, replyMessage, {
-              ...options,
-              parse_mode: 'HTML'
-            });
-          });
+          telegramBotSendMessagesInOrder(chatId, {
+            ...options,
+            parse_mode: 'HTML'
+          }, reply);
         } else {
           telegramBot.sendMessage(chatId, defaultAnswer);
         }
@@ -109,18 +103,26 @@ telegramBot.onText(/\/help/, async (msg, match) => {
   var permission = await checkPermission(msg);
 
   if (permission) {
-    reply.map(replyMessage => {
-      telegramBot.sendMessage(chatId, replyMessage, {
-        parse_mode: 'HTML',
-        reply_markup: JSON.stringify({
-          keyboard: defaultKeyboard(isAdmin)
-        })
-      });
-    });
+    telegramBotSendMessagesInOrder(chatId, {
+      parse_mode: 'HTML',
+      reply_markup: JSON.stringify({
+        keyboard: defaultKeyboard(isAdmin)
+      })
+    }, reply);
   } else {
     telegramBot.sendMessage(chatId, defaultAnswer);
   }
 });
+
+const telegramBotSendMessagesInOrder = (chatId, options, messages, i = 0) => {
+  telegramBot.sendMessage(chatId, messages[i], options).then(() => {
+    if (i < messages.length - 1) {
+      telegramBotSendMessagesInOrder(chatId, options, messages, i + 1)
+    } else {
+      console.log(`All messages sent in right order`)
+    }
+  });
+};
 
 const checkPermission = async (msg) => {
   const chatId = msg.chat.id;

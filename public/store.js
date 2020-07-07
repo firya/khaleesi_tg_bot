@@ -19,6 +19,10 @@ export const store = {
       phone: 528543
     }
   },
+  counterIds: {
+    "dveri-2000.ru": 7795096,
+    "krepostdver.ru": 21798802
+  },
   mangoSites: {
     '74951501130': 'dveri-2000.ru',
     '74951505829': 'krepostdver.ru'
