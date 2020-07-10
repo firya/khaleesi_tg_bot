@@ -83,7 +83,14 @@ export default class Report {
   // Получить число НАЗНАЧЕННЫХ замеров на интервал дат
   getLeadMeterAt = (interval, onlyCount = false) => {
     return new Promise(async (resolve, reject) => {
-      var leads = await amocrm.getLeadByMeterDateHack(interval);
+      // var leads = await amocrm.getLeadByMeterDateHack(interval);
+      var leads = await amocrm.getAllEntities('leads', {
+        filter: {
+          custom_fields_values: {
+            [this.props.fieldIds.lead.meterDate]: interval
+          }
+        }
+      });
 
       var cost = await roistat.getMarketingCost(interval);
 
