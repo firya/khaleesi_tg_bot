@@ -1,5 +1,5 @@
 import request from 'request';
-import { dateForRoistat } from '../utils.js';
+import { dateForRoistat, checkIsHasValidDomain } from '../utils.js';
 
 class Roistat {
   constructor() {
@@ -46,6 +46,9 @@ class Roistat {
         "extend": ["visit"]
       }).then(res => {
         var result = {};
+        var site = (res.data[0]) ? res.data[0].comment : null;
+        site = checkIsHasValidDomain(site);
+        result.site = site;
         result.roistat_id = (res.data[0]) ? res.data[0].visit_id : null;
         result.metrika_id = (res.data[0]?.visit?.metrika_client_id) ? res.data[0].visit.metrika_client_id : null;
         resolve(result);

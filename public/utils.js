@@ -188,3 +188,13 @@ export const joinReplayByMaxLength = (replayArray, maxLength = 4096) => {
 
   return result;
 }
+
+export const checkIsHasValidDomain = (domain) => {
+  var re = new RegExp(/([\w\-]+)\.([\w]+)/);
+  var result = domain.match(re);
+  if (!result) {
+    return null;
+  } else {
+    return result[0];
+  }
+} 

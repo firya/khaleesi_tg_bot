@@ -50,6 +50,8 @@ class LeadHook {
           metrikaId = metrikaId || roistatResult.metrika_id;
         }
 
+        site = site || roistatResult.site;
+
         if (!roistatId || !metrikaId) {
           for (let i = 0; i < phones.length; i++) {
             var prevLeads = await amocrm.getAllEntities('leads', {
