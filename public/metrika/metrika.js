@@ -1,6 +1,7 @@
 import request from 'request';
 import createCsvWriter from 'csv-writer';
 import fs from 'fs';
+import { timestampToDate } from '../utils.js';
 
 class Metrika {
   constructor() {
@@ -14,7 +15,7 @@ class Metrika {
     return new Promise((resolve, reject) => {
       var currentTime = Math.round(new Date().getTime() / 1000);
 
-      var fileName = `${currentTime}.csv`;
+      var fileName = `${timestampToDate(currentTime, false, true)}.csv`;
 
       const csvWriter = createCsvWriter.createObjectCsvWriter({
         path: `${this.pathToCSV}/${fileName}`,
