@@ -1,7 +1,7 @@
 import { amocrm } from './amocrm.js';
 import { dadataAddress, dadataPhone } from '../dadata/dadata.js';
 import { roistat } from '../roistat/roistat.js';
-import { clearPhone } from '../utils.js';
+import { formatPhone } from '../utils.js';
 import { store } from '../store.js';
 
 class LeadHook {
@@ -27,7 +27,7 @@ class LeadHook {
       var meterAddress = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
       var mangoLine = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.mangoLine);
       var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
-      var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, clearPhone) : [];
+      var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, formatPhone) : [];
 
       if (!site) {
         if (mangoLine) {

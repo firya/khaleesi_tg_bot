@@ -82,7 +82,7 @@ export const formatPhone = (str) => {
   if (phone.length != 11) {
     return str;
   } else {
-    return phone.replace(/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{2})([0-9]{2})/, "+7 $2 $3-$4-$5");
+    return phone.replace(/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{2})([0-9]{2})/, "+7$2$3$4$5");
   }
 
   return phone;
