@@ -27,7 +27,7 @@ class LeadHook {
       var meterAddress = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
       var mangoLine = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.mangoLine);
       var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
-      var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true) : [];
+      var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, clearPhone) : [];
 
       if (!site) {
         if (mangoLine) {
@@ -37,12 +37,11 @@ class LeadHook {
 
       meterAddress = await dadataAddress('address', [meterAddress]);
       meterAddress = meterAddress[0];
-      phones = await dadataPhone('phone', phones);
 
       if (!roistatId || !metrikaId) {
         let roistatResult = null;
         for await (const phone of phones) {
-          roistatResult = await roistat.getCallerByPhone(clearPhone(phone));
+          roistatResult = await roistat.getCallerByPhone(phone);
         }
 
         if (roistatResult.roistat_id || roistatResult.metrika_id) {
