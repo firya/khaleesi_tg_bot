@@ -35,6 +35,8 @@ export const defaultKeyboard = (admin = false) => {
         '🙎‍♂️ Add User',
         '💀 Remove User'
       ], [
+        '📌 Отслеживание',
+      ], [
         '/help',
       ]
     ];

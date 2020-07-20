@@ -12,6 +12,8 @@ import RemoveCron from './commands/removeCron.js';
 import AddUser from './commands/addUser.js';
 import RemoveUser from './commands/removeUser.js';
 
+import Tracking from './commands/tracking.js';
+
 import MyID from './commands/myid.js';
 import Help from './commands/help.js';
 
@@ -24,7 +26,7 @@ import { defaultKeyboard } from './keyboards.js';
 const token = process.env.TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
-const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser];
+const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser, Tracking];
 
 export const telegramBot = new TelegramBot(token);
 

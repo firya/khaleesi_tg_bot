@@ -1,6 +1,23 @@
 import './router.js';
 import './cron.js';
 
+import { parseDate } from './utils.js';
+import { amocrm } from './amocrm/amocrm.js';
+
+// var interval = parseDate('18.07.2020');
+
+// amocrm.updateTrackingParams({ id: 28549711 });
+
+// amocrm.getAllEntities('leads', {
+// }).then(leads => {
+//   leads.map(lead => {
+//     amocrm.getTrackingParams(lead).then(res => {
+//       // console.log(res)
+//     });
+//   });
+// });
+
+
 // import { parseDate } from './utils.js';
 // import Report from './report/report.js';
 

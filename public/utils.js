@@ -190,6 +190,9 @@ export const joinReplayByMaxLength = (replayArray, maxLength = 4096) => {
 }
 
 export const checkIsHasValidDomain = (domain) => {
+  if (!domain) {
+    return null;
+  }
   var re = new RegExp(/([\w\-]+)\.([\w]+)/);
   var result = domain.match(re);
   if (!result) {
@@ -197,4 +200,8 @@ export const checkIsHasValidDomain = (domain) => {
   } else {
     return result[0];
   }
-} 
+}
+
+export const timeout = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

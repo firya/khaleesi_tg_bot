@@ -1,5 +1,5 @@
 import request from 'request';
-import { dateForRoistat, checkIsHasValidDomain } from '../utils.js';
+import { dateForRoistat, checkIsHasValidDomain, timeout } from '../utils.js';
 
 class Roistat {
   constructor() {
@@ -44,15 +44,25 @@ class Roistat {
         "limit": 1,
         "offset": 0,
         "extend": ["visit"]
-      }).then(res => {
-        var result = {};
-        var site = (res.data[0]) ? res.data[0].comment : null;
-        site = checkIsHasValidDomain(site);
-        result.site = site;
-        result.roistat_id = (res.data[0]) ? res.data[0].visit_id : null;
-        result.metrika_id = (res.data[0]?.visit?.metrika_client_id) ? res.data[0].visit.metrika_client_id : null;
-        resolve(result);
-      })
+      }).then(async res => {
+        if (res) {
+          await timeout(100);
+          if (res.status == 'error') {
+            reject(res.error);
+          } else {
+            var result = {};
+            var site = (res.data[0]) ? res.data[0].comment : null;
+
+            site = checkIsHasValidDomain(site);
+            result.site = site;
+            result.roistatId = (res.data[0]) ? res.data[0].visit_id : null;
+            result.metrikaId = (res.data[0]?.visit?.metrika_client_id) ? res.data[0].visit.metrika_client_id : null;
+            resolve(result);
+          }
+        } else {
+          reject("error");
+        }
+      });
     });
   }
 

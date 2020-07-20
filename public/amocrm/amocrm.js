@@ -1,4 +1,7 @@
 import request from 'request';
+import { store } from '../store.js';
+import { roistat } from '../roistat/roistat.js';
+import { formatPhone, timeout } from '../utils.js';
 
 class AmoCRM {
   constructor() {
@@ -291,6 +294,110 @@ class AmoCRM {
 
     } else {
       return [];
+    }
+  }
+
+  // interval or id
+  updateTrackingParams = async (data = {}) => {
+    var filter = (data.interval) ? { created_at: data.interval } : { id: data.id }
+
+    var leads = await amocrm.getAllEntities('leads', {
+      filter: filter,
+      with: 'contacts'
+    });
+
+    leads = await amocrm.getLeadsContacts(leads);
+
+    for (const lead of leads) {
+      var roistatId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.roistat);
+      var metrikaId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.metrikaId);
+      var site = amocrm.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.site);
+
+      if (!roistatId || !metrikaId || !site) {
+        var result = await this.getTrackingParams(lead);
+
+        this.updateEntity('leads', lead.id, {
+          custom_fields_values: [
+            {
+              field_id: store.fieldIds.lead.site,
+              values: [
+                {
+                  value: result.site || null
+                }
+              ]
+            }, {
+              field_id: store.fieldIds.lead.roistat,
+              values: [
+                {
+                  value: result.roistatId || null
+                }
+              ]
+            }, {
+              field_id: store.fieldIds.lead.metrikaId,
+              values: [
+                {
+                  value: result.metrikaId || null
+                }
+              ]
+            }
+          ]
+        });
+      }
+    }
+  }
+
+  getTrackingParams = async (lead) => {
+    var roistatId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.roistat);
+    var metrikaId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.metrikaId);
+    var site = amocrm.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.site);
+    var phones = (lead.contact) ? this.findFieldValueById(lead.contact.custom_fields_values, store.fieldIds.contact.phone, true, formatPhone) : [];
+
+    if (!site) {
+      var mangoLine = amocrm.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.mangoLine);
+
+      if (mangoLine) {
+        site = store.mangoSites[mangoLine];
+      }
+    }
+
+    let roistatResult = null;
+    for await (const phone of phones) {
+      roistatResult = await roistat.getCallerByPhone(phone).catch(err => console.log(err, roistatId, metrikaId));
+
+      if (roistatResult) {
+        roistatId = roistatId || roistatResult.roistatId;
+        metrikaId = metrikaId || roistatResult.metrikaId;
+        site = site || roistatResult.site;
+      }
+
+      if (!roistatId || !metrikaId) {
+        var prevLeads = await this.getAllEntities('leads', {
+          query: phone,
+          order: {
+            created_at: 'desc'
+          }
+        });
+
+        for (let j = 0; j < prevLeads.length; j++) {
+          if (!roistatId) {
+            roistatId = this.findFieldValueById(prevLeads[j].custom_fields_values, store.fieldIds.lead.roistat);
+          }
+
+          if (!metrikaId) {
+            metrikaId = this.findFieldValueById(prevLeads[j].custom_fields_values, store.fieldIds.lead.metrikaId);
+          }
+
+          if (roistatId && metrikaId) {
+            break;
+          }
+        }
+      }
+    }
+
+    return {
+      site: site,
+      roistatId: roistatId,
+      metrikaId: metrikaId
     }
   }
 
