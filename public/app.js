@@ -4,9 +4,9 @@ import './cron.js';
 import { parseDate } from './utils.js';
 import { amocrm } from './amocrm/amocrm.js';
 
-// var interval = parseDate('18.07.2020');
+// var interval = parseDate('20.07.2020');
 
-// amocrm.updateTrackingParams({ id: 28549711 });
+// amocrm.updateTrackingParams({ interval: interval });
 
 // amocrm.getAllEntities('leads', {
 // }).then(leads => {

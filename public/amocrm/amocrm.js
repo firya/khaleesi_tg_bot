@@ -1,7 +1,7 @@
 import request from 'request';
 import { store } from '../store.js';
 import { roistat } from '../roistat/roistat.js';
-import { formatPhone, timeout } from '../utils.js';
+import { clearPhone } from '../utils.js';
 
 class AmoCRM {
   constructor() {
@@ -350,7 +350,7 @@ class AmoCRM {
     var roistatId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.roistat);
     var metrikaId = this.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.metrikaId);
     var site = amocrm.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.site);
-    var phones = (lead.contact) ? this.findFieldValueById(lead.contact.custom_fields_values, store.fieldIds.contact.phone, true, formatPhone) : [];
+    var phones = (lead.contact) ? this.findFieldValueById(lead.contact.custom_fields_values, store.fieldIds.contact.phone, true, clearPhone) : [];
 
     if (!site) {
       var mangoLine = amocrm.findFieldValueById(lead.custom_fields_values, store.fieldIds.lead.mangoLine);
@@ -362,7 +362,7 @@ class AmoCRM {
 
     let roistatResult = null;
     for await (const phone of phones) {
-      roistatResult = await roistat.getCallerByPhone(phone).catch(err => console.log(err, roistatId, metrikaId));
+      roistatResult = await roistat.getCallerByPhone(phone).catch(err => console.log(err));
 
       if (roistatResult) {
         roistatId = roistatId || roistatResult.roistatId;
