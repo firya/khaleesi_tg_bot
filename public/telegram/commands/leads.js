@@ -45,7 +45,7 @@ class Leads {
           resolve({ reply: reply });
         });
       } else {
-        return { reply: `Неверный формат даты: ${match[2]}` };
+        return { reply: `Неверный формат даты или слишком большой интервал: ${match[2]}` };
       }
     } else {
       const opts = {
@@ -53,7 +53,7 @@ class Leads {
           inline_keyboard: inlineDayKeyboard({ callback_data: '/leads' })
         })
       };
-      return { reply: `Выберите день`, options: opts };
+      return { reply: [`Выберите день`], options: opts };
     }
   }
 }

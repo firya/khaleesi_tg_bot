@@ -1,6 +1,7 @@
 import e from "express";
 
 export const timeZoneOffset = 60 * 60 * 3;
+const maxIntervalDays = 40;
 
 export const parseDate = (strDate, UTC = false) => {
   var from, to;
@@ -24,10 +25,26 @@ export const parseDate = (strDate, UTC = false) => {
     }
   }
 
-  return {
-    from: from,
-    to: to
-  };
+  if ((to - from) / (60 * 60 * 24) > maxIntervalDays) {
+    return false;
+  } else {
+    return {
+      from: from,
+      to: to
+    };
+  }
+}
+
+export const brakeInterval = (interval) => {
+  var result = [];
+  for (let i = 0; i < (interval.to - interval.from) / (60 * 60 * 24); i++) {
+    var from = interval.from + 60 * 60 * 24 * i;
+    result.push({
+      from: from,
+      to: from + 60 * 60 * 24 - 1,
+    });
+  }
+  return result;
 }
 
 export const dateForRoistat = (date) => {

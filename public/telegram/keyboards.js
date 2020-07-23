@@ -19,6 +19,13 @@ export const inlineTimeKeyboard = (props = {}) => {
   return listToMatrix(generateTimeBlock({ ...props, from: 8, to: 24 }), 4);
 }
 
+export const inlineIntervalKeyboard = (props = {}) => {
+  var result = generateFewIntervals({ ...props });
+  result = result.concat(generateMonthCalendar({ ...props, count: 3 }));
+
+  return listToMatrix(result, 3);
+}
+
 export const defaultKeyboard = (admin = false) => {
   if (admin) {
     return [
@@ -36,6 +43,7 @@ export const defaultKeyboard = (admin = false) => {
         '💀 Remove User'
       ], [
         '📌 Отслеживание',
+        '⏳ Интервал',
       ], [
         '/help',
       ]
@@ -75,6 +83,34 @@ const generateMonthCalendar = (props = {}) => {
     })
 
     d.setMonth(d.getMonth() - 1);
+  }
+
+  return result;
+}
+
+const generateFewIntervals = (props = {}) => {
+  var result = [];
+
+  var list = [7, 14, 30]
+  var textList = ['7 дней', '14 дней', '30 дней'];
+
+  var d = new Date();
+  for (let i = 0; i < list.length; i++) {
+    const day = d.getDate();
+    const month = d.getMonth();
+    const year = d.getFullYear();
+
+    var fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - list[i]);
+
+    const fromDay = fromDate.getDate();
+    const fromMonth = fromDate.getMonth();
+    const fromYear = fromDate.getFullYear();
+
+    result.push({
+      text: (textList[i]) ? textList[i] : `${leftPad(fromDay, 2)}.${leftPad(fromMonth + 1, 2)}.${fromYear}-${leftPad(day, 2)}.${leftPad(month + 1, 2)}.${year}`,
+      callback_data: `${props.callback_data} ${leftPad(fromDay, 2)}.${leftPad(fromMonth + 1, 2)}.${fromYear}-${leftPad(day, 2)}.${leftPad(month + 1, 2)}.${year}`
+    });
   }
 
   return result;

@@ -68,7 +68,7 @@ export default class TelegramReport {
           resolve({ reply: [reply.join('\n')], options: opts });
         })
       } else {
-        return { reply: [`Неверный формат даты: ${match[1]}`] };
+        return { reply: [`Неверный формат даты или слишком большой интервал: ${match[1]}`] };
       }
     } else {
       var opts = {};

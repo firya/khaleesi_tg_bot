@@ -1,11 +1,21 @@
 import './router.js';
 import './cron.js';
 
-import { parseDate } from './utils.js';
-import { amocrm } from './amocrm/amocrm.js';
+// import { parseDate, brakeInterval, timestampToDate } from './utils.js';
+// import Report from './report/report.js';
 
-// var interval = parseDate('20.07.2020');
+// const test = async () => {
+//   var interval = parseDate('18.06.2020-22.06.2020');
+//   var intervalList = brakeInterval(interval);
 
+//   var report = new Report();
+//   for await (let intervalItem of intervalList) {
+//     report.getLeadCreatedAt(intervalItem).then(res => console.log(res.data.length, res.cost));
+//   }
+// }
+// test();
+
+// console.log(interval);
 // amocrm.updateTrackingParams({ interval: interval });
 
 // amocrm.getAllEntities('leads', {

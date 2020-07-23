@@ -3,6 +3,8 @@ import TelegramBot from 'node-telegram-bot-api';
 import MeterAt from './commands/meterat.js';
 import CreatedAt from './commands/createdat.js';
 import ClosedAt from './commands/closedat.js';
+import Interval from './commands/interval.js';
+
 import Leads from './commands/leads.js';
 import MailReport from './commands/mail.js';
 
@@ -26,7 +28,7 @@ import { defaultKeyboard } from './keyboards.js';
 const token = process.env.TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
-const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser, Tracking];
+const commandList = [MyID, CreatedAt, MeterAt, ClosedAt, Leads, MailReport, AddCron, RemoveCron, AddUser, RemoveUser, Tracking, Interval];
 
 export const telegramBot = new TelegramBot(token);
 
@@ -40,10 +42,12 @@ commandList.map((obj, i) => {
       if (permission) {
         const { reply, options } = await obj.reply(msg, match);
 
-        telegramBotSendMessagesInOrder(chatId, {
-          ...options,
-          parse_mode: 'HTML'
-        }, reply);
+        if (reply.length) {
+          telegramBotSendMessagesInOrder(chatId, {
+            ...options,
+            parse_mode: 'HTML'
+          }, reply);
+        }
       } else {
         telegramBot.sendMessage(chatId, defaultAnswer);
       }
