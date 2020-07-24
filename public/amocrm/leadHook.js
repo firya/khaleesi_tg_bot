@@ -24,7 +24,7 @@ class LeadHook {
       lead = await amocrm.getLeadsContacts(lead);
       lead = lead[0];
 
-      var phones = (lead.contact) ? this.findFieldValueById(lead.contact.custom_fields_values, store.fieldIds.contact.phone, true, formatPhone) : [];
+      var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, store.fieldIds.contact.phone, true, formatPhone) : [];
       var meterAddress = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
 
       meterAddress = await dadataAddress('address', [meterAddress]);
