@@ -257,7 +257,7 @@ class AmoCRM {
     params.limit = (!count || count - allData.length > this.getFunctions[entity].limit) ? this.getFunctions[entity].limit : count - allData.length;
 
     params.page = (params.page) ? params.page : 1;
-    console.log(`${entity}, Page: ${params.page}`);
+    // console.log(`${entity}, Page: ${params.page}`);
 
     var newParams = JSON.parse(JSON.stringify(params));
 

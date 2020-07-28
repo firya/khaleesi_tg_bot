@@ -47,28 +47,30 @@ export default class Report {
 
       var leadIds = setLeadAddressEvents.map(event => event.entity_id);
 
-      var changeStatusEvents = await amocrm.getAllEntities('events', {
-        filter: {
-          entity: 'lead',
-          type: `lead_status_changed`,
-          value_after: {
-            leads_statuses: [{
-              pipeline_id: this.props.pipelineId,
-              status_id: this.props.statusIds.meter
-            }]
-          },
-          created_at: `${interval.from},${interval.to}`
-        }
-      });
+      // add renew meter to stat (bad results)
+      // var changeStatusEvents = await amocrm.getAllEntities('events', {
+      //   filter: {
+      //     entity: 'lead',
+      //     type: `lead_status_changed`,
+      //     value_after: {
+      //       leads_statuses: [{
+      //         pipeline_id: this.props.pipelineId,
+      //         status_id: this.props.statusIds.meter
+      //       }]
+      //     },
+      //     created_at: `${interval.from},${interval.to}`
+      //   }
+      // });
 
-      var cost = await roistat.getMarketingCost(interval);
+      // leadIds = leadIds.concat(changeStatusEvents.map(event => event.entity_id));
 
-      leadIds = leadIds.concat(changeStatusEvents.map(event => event.entity_id));
       leadIds = leadIds.filter((item, index) => leadIds.indexOf(item) === index);
 
       if (onlyCount) {
         resolve(leadIds.length);
       } else {
+        var cost = await roistat.getMarketingCost(interval);
+
         if (leadIds.length) {
           this.getLeadInfo(leadIds).then(res => {
             resolve(this.makeResult(res, cost));
