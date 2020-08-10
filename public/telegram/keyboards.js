@@ -82,7 +82,11 @@ const generateMonthCalendar = (props = {}) => {
       callback_data: `${props.callback_data} ${leftPad(month + 1, 2)}.${year}`
     })
 
+    var prevMomth = d.getMonth();
     d.setMonth(d.getMonth() - 1);
+    if (d.getMonth() == prevMomth) {
+      d.setMonth(d.getMonth() - 1);
+    }
   }
 
   return result;

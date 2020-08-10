@@ -25,6 +25,8 @@ import { hostURL } from '../dev.js';
 
 import { defaultKeyboard } from './keyboards.js';
 
+var telegramBotLastMessages = [];
+
 const token = process.env.TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 const defaultAnswer = `Мы сообщили о вас куда следует`;
@@ -79,24 +81,31 @@ telegramBot.on('callback_query', function onCallbackQuery(callbackQuery) {
   const msg = callbackQuery.message;
   const chatId = msg.chat.id;
 
-  commandList.map((obj, i) => {
-    obj.commands.map(async (command, j) => {
-      var match = action.match(command)
-      if (match) {
-        var permission = await checkPermission(msg);
-        if (permission) {
-          const { reply, options } = await obj.reply(msg, match);
+  if (telegramBotLastMessages.indexOf(msg.message_id) == -1) {
+    telegramBotLastMessages.unshift(msg.message_id);
+    if (telegramBotLastMessages.length > 50) {
+      telegramBotLastMessages.pop();
+    }
 
-          telegramBotSendMessagesInOrder(chatId, {
-            ...options,
-            parse_mode: 'HTML'
-          }, reply);
-        } else {
-          telegramBot.sendMessage(chatId, defaultAnswer);
+    commandList.map((obj, i) => {
+      obj.commands.map(async (command, j) => {
+        var match = action.match(command)
+        if (match) {
+          var permission = await checkPermission(msg);
+          if (permission) {
+            const { reply, options } = await obj.reply(msg, match);
+
+            telegramBotSendMessagesInOrder(chatId, {
+              ...options,
+              parse_mode: 'HTML'
+            }, reply);
+          } else {
+            telegramBot.sendMessage(chatId, defaultAnswer);
+          }
         }
-      }
+      });
     });
-  });
+  }
 });
 
 telegramBot.onText(/\/help/, async (msg, match) => {
@@ -121,7 +130,7 @@ telegramBot.onText(/\/help/, async (msg, match) => {
 });
 
 const telegramBotSendMessagesInOrder = (chatId, options, messages, i = 0) => {
-  telegramBot.sendMessage(chatId, messages[i], options).then(() => {
+  telegramBot.sendMessage(chatId, messages[i], options).then((res) => {
     if (i < messages.length - 1) {
       telegramBotSendMessagesInOrder(chatId, options, messages, i + 1)
     } else {

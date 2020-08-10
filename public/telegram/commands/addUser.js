@@ -12,7 +12,6 @@ class AddUser {
   }
 
   reply = async (msg, match) => {
-    console.log(123)
     const chatId = msg.chat.id;
     if (match[1] && match[2] && match[3]) {
       var user = await DB.query(`INSERT INTO bot_accounts VALUES(0, '${match[1]}', '${match[2]}', '${match[3]}')`);

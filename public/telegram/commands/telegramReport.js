@@ -15,6 +15,23 @@ export default class TelegramReport {
     return `${this.examples.join(", ")} — ${this.helpText}`;
   }
 
+  prepareShortAnswer = (data) => {
+    var reply = [];
+    var domains = ['dveri-2000.ru', 'krepostdver.ru'];
+
+    reply.push(`Итог ${Math.ceil(data.cost / 1000) * 1000}₽`);
+
+    var siteShort = [0, 0];
+    data.bySite.map(site => {
+      var position = domains.indexOf(site.name);
+      position = (position == -1) ? 2 : position;
+      siteShort[position] = site.count;
+    });
+    reply.push(siteShort.join("/"));
+
+    return reply;
+  }
+
   reply = (msg, match) => {
     if (match[1]) {
       const command = match[0].substring(1, /\s/.exec(match[0]).index);
@@ -65,7 +82,13 @@ export default class TelegramReport {
             reply.push(`Нет информации`)
           }
 
-          resolve({ reply: [reply.join('\n')], options: opts });
+          reply = [reply.join('\n')];
+
+          if (msg.chat.id == 1690894 && this.mainFunction == 'getLeadCreatedAt') {
+            reply.push(this.prepareShortAnswer(data).join('\n'));
+          }
+
+          resolve({ reply: reply, options: opts });
         })
       } else {
         return { reply: [`Неверный формат даты или слишком большой интервал: ${match[1]}`] };
