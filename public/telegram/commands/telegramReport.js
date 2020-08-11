@@ -84,7 +84,7 @@ export default class TelegramReport {
 
           reply = [reply.join('\n')];
 
-          if (msg.chat.id == 1690894 && this.mainFunction == 'getLeadCreatedAt') {
+          if (msg.chat?.id == 1690894 && this.mainFunction == 'getLeadCreatedAt') {
             reply.push(this.prepareShortAnswer(data).join('\n'));
           }
 

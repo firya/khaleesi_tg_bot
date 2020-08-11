@@ -63,7 +63,7 @@ export const telegramBotTrigger = (chatId, trigger) => {
       obj.commands.map(async (command, j) => {
         var match = trigger.match(command);
         if (match) {
-          const { reply, options } = await obj.reply({}, match);
+          const { reply, options } = await obj.reply({ chat: { id: chatId } }, match);
 
           telegramBotSendMessagesInOrder(chatId, {
             ...options,
