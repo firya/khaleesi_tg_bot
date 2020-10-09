@@ -55,6 +55,38 @@ class LeadHook {
       });
     }
   }
+  pastDateFix = async (req) => {
+    if (req.leads?.update) {
+      if (req.leads.update[0].modified_user_id == this.props.userIds.IP) {
+        var leadId = req.leads.update[0].id;
+
+        var lead = await amocrm.getAllEntities('leads', {
+          filter: {
+            id: leadId
+          }
+        }, 1);
+
+        lead = lead[0];
+
+        var declineReason = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.declineReason);
+        declineReason = (declineReason) ? declineReason : '';
+
+        amocrm.updateEntity('leads', lead.id, {
+          custom_fields_values: [
+            {
+              field_id: this.props.fieldIds.lead.declineReason,
+              values: [
+                {
+                  value: `${declineReason} `
+                }
+              ]
+            }
+          ]
+        });
+      }
+
+    }
+  }
 }
 
 export default new LeadHook();

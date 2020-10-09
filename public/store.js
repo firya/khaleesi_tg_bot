@@ -2,6 +2,10 @@ export const store = {
   statusIds: {
     meter: 24924787,
   },
+  userIds: {
+    admin: 136396,
+    IP: 3342907
+  },
   fieldIds: {
     lead: {
       roistat: 528589,
@@ -13,7 +17,8 @@ export const store = {
       meterAddress: 556363,
       meterTime: 556377,
       meterInfo: 643929,
-      meterMaster: 556381
+      meterMaster: 556381,
+      declineReason: 655875
     },
     contact: {
       phone: 528543

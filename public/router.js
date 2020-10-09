@@ -59,6 +59,12 @@ app.use(`/roistat_webhook`, async (req, res) => {
   res.sendStatus(200);
 });
 
+
+app.use(`/amocrm_webhook_past_date_fix`, async (req, res) => {
+  LeadHook.pastDateFix(req.body)
+  res.sendStatus(200);
+});
+
 app.listen(8080, function () {
   console.log('Example app listening on port 8080!');
 });
