@@ -4,7 +4,7 @@ export const store = {
   },
   userIds: {
     admin: 136396,
-    IP: 3342907
+    IP: 3342907,
   },
   fieldIds: {
     lead: {
@@ -18,18 +18,18 @@ export const store = {
       meterTime: 556377,
       meterInfo: 643929,
       meterMaster: 556381,
-      declineReason: 655875
+      declineReason: 655875,
     },
     contact: {
-      phone: 528543
-    }
+      phone: 528543,
+    },
   },
   counterIds: {
     "dveri-2000.ru": 7795096,
-    "krepostdver.ru": 21798802
+    "krepostdver.ru": 21798802,
   },
   mangoSites: {
-    '74951501130': 'dveri-2000.ru',
-    '74951505829': 'krepostdver.ru'
-  }
+    74951501130: "dveri-2000.ru",
+    74951505829: "krepostdver.ru",
+  },
 };

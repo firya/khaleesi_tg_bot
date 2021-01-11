@@ -1,6 +1,6 @@
-import { amocrm } from '../amocrm/amocrm.js';
-import { formatPhone, timestampToDate } from '../utils.js';
-import { roistat } from '../roistat/roistat.js';
+import { amocrm } from "../amocrm/amocrm.js";
+import { formatPhone, timestampToDate } from "../utils.js";
+import { roistat } from "../roistat/roistat.js";
 
 export default class Report {
   constructor() {
@@ -9,8 +9,9 @@ export default class Report {
       statusIds: {
         meter: 24924787,
         success: 142,
-        decline: 143
+        decline: 143,
       },
+      afterMeter: [142, 143, 26202820],
       fieldIds: {
         lead: {
           roistat: 528589,
@@ -20,13 +21,13 @@ export default class Report {
           meterAddress: 556363,
           meterTime: 556377,
           meterInfo: 643929,
-          meterMaster: 556381
+          meterMaster: 556381,
         },
         contact: {
-          phone: 528543
-        }
-      }
-    }
+          phone: 528543,
+        },
+      },
+    };
   }
 
   // Получить число СОЗДАННЫХ замеров за интервал дат
@@ -34,18 +35,18 @@ export default class Report {
     return new Promise(async (resolve, reject) => {
       var result = [];
 
-      var setLeadAddressEvents = await amocrm.getAllEntities('events', {
+      var setLeadAddressEvents = await amocrm.getAllEntities("events", {
         filter: {
-          entity: 'lead',
+          entity: "lead",
           type: `custom_field_${this.props.fieldIds.lead.meterDate}_value_changed`,
           value_before: {
-            value: ' '
+            value: " ",
           },
-          created_at: `${interval.from},${interval.to}`
-        }
+          created_at: `${interval.from},${interval.to}`,
+        },
       });
 
-      var leadIds = setLeadAddressEvents.map(event => event.entity_id);
+      var leadIds = setLeadAddressEvents.map((event) => event.entity_id);
 
       // add renew meter to stat (bad results)
       // var changeStatusEvents = await amocrm.getAllEntities('events', {
@@ -64,7 +65,9 @@ export default class Report {
 
       // leadIds = leadIds.concat(changeStatusEvents.map(event => event.entity_id));
 
-      leadIds = leadIds.filter((item, index) => leadIds.indexOf(item) === index);
+      leadIds = leadIds.filter(
+        (item, index) => leadIds.indexOf(item) === index
+      );
 
       if (onlyCount) {
         resolve(leadIds.length);
@@ -72,26 +75,30 @@ export default class Report {
         var cost = await roistat.getMarketingCost(interval);
 
         if (leadIds.length) {
-          this.getLeadInfo(leadIds).then(res => {
-            resolve(this.makeResult(res, cost));
-          }).catch(err => console.log(`Не удалось получить информацию о сделке: ${err}`));
+          this.getLeadInfo(leadIds)
+            .then((res) => {
+              resolve(this.makeResult(res, cost));
+            })
+            .catch((err) =>
+              console.log(`Не удалось получить информацию о сделке: ${err}`)
+            );
         } else {
-          resolve([])
+          resolve([]);
         }
       }
-    })
-  }
+    });
+  };
 
   // Получить число НАЗНАЧЕННЫХ замеров на интервал дат
   getLeadMeterAt = (interval, onlyCount = false) => {
     return new Promise(async (resolve, reject) => {
       // var leads = await amocrm.getLeadByMeterDateHack(interval);
-      var leads = await amocrm.getAllEntities('leads', {
+      var leads = await amocrm.getAllEntities("leads", {
         filter: {
           custom_fields_values: {
-            [this.props.fieldIds.lead.meterDate]: interval
-          }
-        }
+            [this.props.fieldIds.lead.meterDate]: interval,
+          },
+        },
       });
 
       var cost = await roistat.getMarketingCost(interval);
@@ -99,45 +106,54 @@ export default class Report {
       if (!leads.length) {
         resolve([]);
       } else {
-        var leadIds = leads.map(lead => lead.id);
+        var leadIds = leads.map((lead) => lead.id);
 
         if (onlyCount) {
           resolve(leadIds.length);
         } else {
           if (leadIds.length) {
-            this.getLeadInfo(leadIds).then(res => {
-              resolve(this.makeResult(res, cost));
-            }).catch(err => console.log(`Не удалось получить информацию о сделке: ${err}`));
+            this.getLeadInfo(leadIds)
+              .then((res) => {
+                resolve(this.makeResult(res, cost));
+              })
+              .catch((err) =>
+                console.log(`Не удалось получить информацию о сделке: ${err}`)
+              );
           } else {
             resolve([]);
           }
         }
       }
     });
-  }
+  };
 
   // Получить число ЗАКРЫТЫХ замеров на интервал дат
   getLeadClosedAt = (interval, onlyCount = false) => {
     return new Promise(async (resolve, reject) => {
-      var leads = await amocrm.getAllEntities('events', {
+      var leads = await amocrm.getAllEntities("events", {
         filter: {
-          entity: 'lead',
+          entity: "lead",
           type: `lead_status_changed`,
           value_after: {
-            leads_statuses: [{
-              pipeline_id: this.props.pipelineId,
-              status_id: this.props.statusIds.success
-            }, {
-              pipeline_id: this.props.pipelineId,
-              status_id: this.props.statusIds.decline
-            }]
+            leads_statuses: [
+              {
+                pipeline_id: this.props.pipelineId,
+                status_id: this.props.statusIds.success,
+              },
+              {
+                pipeline_id: this.props.pipelineId,
+                status_id: this.props.statusIds.decline,
+              },
+            ],
           },
-          created_at: `${interval.from},${interval.to}`
-        }
+          created_at: `${interval.from},${interval.to}`,
+        },
       });
 
-      var leadIds = leads.map(event => event.entity_id);
-      leadIds = leadIds.filter((item, index) => leadIds.indexOf(item) === index);
+      var leadIds = leads.map((event) => event.entity_id);
+      leadIds = leadIds.filter(
+        (item, index) => leadIds.indexOf(item) === index
+      );
 
       var cost = await roistat.getMarketingCost(interval);
 
@@ -145,25 +161,36 @@ export default class Report {
         resolve([]);
       } else {
         if (leadIds.length) {
-          this.getLeadInfo(leadIds, [{
-            field: this.props.fieldIds.lead.meterDate,
-            filter: 'not empty'
-          }], true).then(res => {
-            if (onlyCount) {
-              resolve(res.length);
-            } else {
-              resolve(this.makeResult(res, cost));
-            }
-          }).catch(err => console.log(`Не удалось получить информацию о сделке: ${err}`));
+          this.getLeadInfo(
+            leadIds,
+            [
+              {
+                field: this.props.fieldIds.lead.meterDate,
+                filter: "not empty",
+              },
+            ],
+            true
+          )
+            .then((res) => {
+              if (onlyCount) {
+                resolve(res.length);
+              } else {
+                resolve(this.makeResult(res, cost));
+              }
+            })
+            .catch((err) =>
+              console.log(`Не удалось получить информацию о сделке: ${err}`)
+            );
         } else {
           resolve([]);
         }
       }
     });
-  }
+  };
 
   makeResult = (res, cost) => {
     var byStatus = this.countLeadsByStatus(res);
+    console.log(res);
 
     return {
       data: res,
@@ -173,16 +200,17 @@ export default class Report {
       totalDecline: byStatus.decline,
       sale: this.calcSale(res),
       byStatus: byStatus.list,
-      bySite: this.countLeadsByProp(res, 'site'),
-      byMeterMaster: this.countLeadsByProp(res, 'meterMaster'),
-      byUser: this.countLeadsByProp(res, 'userName'),
-      byType: this.countLeadsByProp(res, 'itemType')
+      bySite: this.countLeadsByProp(res, "site"),
+      bySiteShort: this.countLeadsByProp(res, "site", true),
+      byMeterMaster: this.countLeadsByProp(res, "meterMaster"),
+      byUser: this.countLeadsByProp(res, "userName"),
+      byType: this.countLeadsByProp(res, "itemType"),
     };
-  }
+  };
 
   calcSale = (leads) => {
     return leads.reduce((accumulator, lead) => accumulator + lead.price, 0);
-  }
+  };
 
   countLeadsByStatus = (leads) => {
     var result = {};
@@ -191,7 +219,7 @@ export default class Report {
       if (!result[lead.status.id]) {
         result[lead.status.id] = {
           count: 1,
-          name: lead.status.name
+          name: lead.status.name,
         };
       } else {
         result[lead.status.id].count++;
@@ -199,121 +227,169 @@ export default class Report {
     });
 
     return {
-      success: (result[this.props.statusIds.success]) ? result[this.props.statusIds.success].count : 0,
-      decline: (result[this.props.statusIds.decline]) ? result[this.props.statusIds.decline].count : 0,
-      list: Object.values(result).map(obj => obj)
+      success: result[this.props.statusIds.success]
+        ? result[this.props.statusIds.success].count
+        : 0,
+      decline: result[this.props.statusIds.decline]
+        ? result[this.props.statusIds.decline].count
+        : 0,
+      list: Object.values(result).map((obj) => obj),
     };
-  }
+  };
 
-  countLeadsByProp = (leads, prop) => {
+  countLeadsByProp = (leads, prop, onlyMeter = false) => {
     var result = {};
 
     leads.map((lead, i) => {
-      lead[prop] = (lead[prop]) ? lead[prop] : "Не указано";
+      lead[prop] = lead[prop] ? lead[prop] : "Не указано";
 
-      if (!result[lead[prop]]) {
-        result[lead[prop]] = {
-          count: 1,
-          name: lead[prop],
-        };
-      } else {
-        result[lead[prop]].count++;
-      }
-      if (!result[lead[prop]][lead.status.id]) {
-        result[lead[prop]][lead.status.id] = {
-          count: 1,
-          name: lead.status.name
-        };
-      } else {
-        result[lead[prop]][lead.status.id].count++;
+      if (
+        !onlyMeter ||
+        (onlyMeter && this.props.afterMeter.indexOf(lead.status.id) == -1)
+      ) {
+        if (!result[lead[prop]]) {
+          result[lead[prop]] = {
+            count: 1,
+            name: lead[prop],
+          };
+        } else {
+          result[lead[prop]].count++;
+        }
+        if (!result[lead[prop]][lead.status.id]) {
+          result[lead[prop]][lead.status.id] = {
+            count: 1,
+            name: lead.status.name,
+          };
+        } else {
+          result[lead[prop]][lead.status.id].count++;
+        }
       }
     });
 
-    return Object.values(result).map(obj => obj);
-  }
+    return Object.values(result).map((obj) => obj);
+  };
 
   getLeadInfo = async (ids, cfFilter = [], onlyClosed = false) => {
-    var leads = await amocrm.getAllEntities('leads', {
+    var leads = await amocrm.getAllEntities("leads", {
       filter: {
-        id: ids
+        id: ids,
       },
       order: {
-        created_at: 'asc'
+        created_at: "asc",
       },
-      with: 'contacts'
+      with: "contacts",
     });
 
     leads = await amocrm.getLeadsContacts(leads);
 
-    var result = await Promise.all(leads.map(async lead => {
-      var addLead = true;
+    var result = await Promise.all(
+      leads.map(async (lead) => {
+        var addLead = true;
 
-      cfFilter.map(filter => {
-        var fieldValue = amocrm.findFieldValueById(lead.custom_fields_values, filter.field);
-        if (filter.filter == 'not empty' && !fieldValue) {
+        cfFilter.map((filter) => {
+          var fieldValue = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            filter.field
+          );
+          if (filter.filter == "not empty" && !fieldValue) {
+            addLead = false;
+          }
+        });
+
+        if (
+          onlyClosed &&
+          lead.status_id != this.props.statusIds.success &&
+          lead.status_id != this.props.statusIds.decline
+        ) {
           addLead = false;
         }
-      });
 
-      if (onlyClosed && lead.status_id != this.props.statusIds.success && lead.status_id != this.props.statusIds.decline) {
-        addLead = false;
-      }
+        if (addLead) {
+          var status = amocrm.findStatus(lead.status_id);
+          var statusValue = "wait";
+          if (status.id == 142) {
+            statusValue = "done";
+          } else if (status.id == 143) {
+            statusValue = "decline";
+          }
+          status = {
+            id: status.id,
+            name: status.name,
+            value: statusValue,
+          };
 
-      if (addLead) {
-        var status = amocrm.findStatus(lead.status_id);
-        var statusValue = 'wait';
-        if (status.id == 142) {
-          statusValue = 'done';
-        } else if (status.id == 143) {
-          statusValue = 'decline';
+          var user = await amocrm.getUserData(lead.responsible_user_id);
+          var contactName = lead.contact ? lead.contact.name : "";
+          var phones = lead.contact
+            ? amocrm.findFieldValueById(
+                lead.contact.custom_fields_values,
+                this.props.fieldIds.contact.phone,
+                true,
+                formatPhone
+              )
+            : [];
+          var site = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.site
+          );
+          var createdAt = timestampToDate(lead.created_at);
+          var meterAddress = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.meterAddress
+          );
+          var meterDate = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.meterDate,
+            false,
+            timestampToDate
+          );
+          var meterTime = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.meterTime
+          );
+          var meterMaster = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.meterMaster
+          );
+          var meterInfo = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.meterInfo
+          );
+          var itemType = amocrm.findFieldValueById(
+            lead.custom_fields_values,
+            this.props.fieldIds.lead.itemType
+          );
+          var userName = user.name;
+          var price = lead.price;
+
+          return {
+            id: lead.id,
+            price: price,
+            status: status,
+            userName: userName,
+            createdAt: createdAt,
+            contact: {
+              name: contactName,
+              phones: phones,
+            },
+            site: site,
+            address: meterAddress,
+            meterDate: meterDate,
+            itemType: itemType || "Двери",
+            meterTime: meterTime,
+            meterMaster: meterMaster,
+            meterInfo: meterInfo || "",
+          };
+        } else {
+          return "";
         }
-        status = {
-          id: status.id,
-          name: status.name,
-          value: statusValue
-        };
-
-        var user = await amocrm.getUserData(lead.responsible_user_id);
-        var contactName = (lead.contact) ? lead.contact.name : '';
-        var phones = (lead.contact) ? amocrm.findFieldValueById(lead.contact.custom_fields_values, this.props.fieldIds.contact.phone, true, formatPhone) : [];
-        var site = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.site);
-        var createdAt = timestampToDate(lead.created_at);
-        var meterAddress = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterAddress);
-        var meterDate = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterDate, false, timestampToDate);
-        var meterTime = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterTime);
-        var meterMaster = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterMaster);
-        var meterInfo = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.meterInfo);
-        var itemType = amocrm.findFieldValueById(lead.custom_fields_values, this.props.fieldIds.lead.itemType);
-        var userName = user.name;
-        var price = lead.price;
-
-        return {
-          id: lead.id,
-          price: price,
-          status: status,
-          userName: userName,
-          createdAt: createdAt,
-          contact: {
-            name: contactName,
-            phones: phones,
-          },
-          site: site,
-          address: meterAddress,
-          meterDate: meterDate,
-          itemType: itemType || 'Двери',
-          meterTime: meterTime,
-          meterMaster: meterMaster,
-          meterInfo: meterInfo || ''
-        }
-      } else {
-        return '';
-      }
-    }));
+      })
+    );
 
     result = result.filter(function (el) {
       return el;
     });
 
     return result;
-  }
+  };
 }
