@@ -1,13 +1,4 @@
 .env
 node_modules/
-info/
 public/node_modules/
-public/uploads/
-public/reports/
-public/static/reports/html/*.html
-public/static/reports/pdf/*.pdf
-public/static/metrika/*.csv
-!public/static/reports/html/.gitkeep
-!public/static/reports/pdf/.gitkeep
-!public/static/metrika/.gitkeep
 docker-compose.override.yml

@@ -1,23 +1,6 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  mysql:
-    build:
-      context: .
-      dockerfile: Dockerfile-mysql
-    container_name: "${CONTAINER_NAME}_db"
-    ports:
-      - "3311:3306"
-    volumes:
-      - statibot_db_data:/var/lib/mysql
-    restart: unless-stopped
-    environment:
-      - MYSQL_DATABASE=$MYSQL_DATABASE
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
-    command: mysqld --innodb-buffer-pool-size=256M
-
   node:
     build:
       context: .
@@ -32,24 +15,6 @@ services:
       - LETSENCRYPT_HOST=$LETSENCRYPT_HOST
       - LETSENCRYPT_EMAIL=$LETSENCRYPT_EMAIL
       - TELEGRAM_TOKEN=$TELEGRAM_TOKEN
-      - AMOCRM_KEY=$AMOCRM_KEY
-      - AMOCRM_USER=$AMOCRM_USER
-      - AMOCRM_DOMAIN=$AMOCRM_DOMAIN
-      - PDF_CONVERTER=$PDF_CONVERTER
-      - ROISTAT_ID=$ROISTAT_ID
-      - ROISTAT_KEY=$ROISTAT_KEY
-      - MYSQL_DATABASE=$MYSQL_DATABASE
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
-      - MAIL_USER=$MAIL_USER
-      - MAIL_PASSWORD=$MAIL_PASSWORD
-      - DADATA_TOKEN=$DADATA_TOKEN
-      - DADATA_SECRET=$DADATA_SECRET
-      - METRIKA_COUNTER_ID=$METRIKA_COUNTER_ID
-      - METRIKA_TOKEN=$METRIKA_TOKEN
-
-volumes:
-  statibot_db_data:
 
 networks:
   default:
