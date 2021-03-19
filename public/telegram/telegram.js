@@ -18,7 +18,11 @@ telegramBot.on("message", (msg) => {
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
 
-    if (responseStatus && msg.text.length > 42) {
+    if (
+      responseStatus &&
+      ((chatType == "supergroup" && msg.text.length > 42) ||
+        chatType == "private")
+    ) {
       const inputStr = msg.text;
 
       var mapObj = {
