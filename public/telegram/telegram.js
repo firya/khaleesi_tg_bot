@@ -5,8 +5,6 @@ import { hostURL } from "../dev.js";
 const token = process.env.TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 
-console.log(url);
-
 export const telegramBot = new TelegramBot(token);
 
 telegramBot.setWebHook(url);
@@ -15,15 +13,44 @@ telegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 2 : 100;
+  const resChance = chatType == "supergroup" ? 5 : 100;
 
-  if (msg.hasOwnProperty("text")) {
+  if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
-    console.log(responseStatus);
-    if (responseStatus) {
+
+    if (responseStatus && msg.text.length > 42) {
       const inputStr = msg.text;
 
       var mapObj = {
+        стве: "тьве",
+        если: "еси",
+        рует: "ует",
+        оло: "оо",
+        ало: "яо",
+        оли: "ои",
+        ать: "ять",
+        дра: "дя",
+        вар: "вяй",
+        еще: "еси",
+        ещё: "еси",
+        олл: "ой",
+        зад: "зяд",
+        тал: "тял",
+        мог: "мёг",
+        каз: "кяз",
+        нра: "нья",
+        пре: "пье",
+        про: "пьё",
+        луж: "люзь",
+        пра: "пья",
+        при: "пьи",
+        пла: "пья",
+        вле: "вье",
+        инг: "инк",
+        тра: "тря",
+        дли: "дьи",
+        ще: "се",
+        из: "изь",
         ож: "ёз",
         ор: "ой",
         ер: "ей",
@@ -32,25 +59,11 @@ telegramBot.on("message", (msg) => {
         ая: "яя",
         аю: "яю",
         ма: "мя",
-        оло: "оо",
-        ало: "яо",
-        оли: "ои",
-        ать: "ять",
-        дра: "дя",
-        вар: "вяй",
         рь: "й",
         ар: "ай",
-        еще: "еси",
-        ещё: "еси",
-        олл: "ой",
         ол: "ой",
         го: "гё",
-        зад: "зяд",
-        тал: "тял",
         ан: "ян",
-        мог: "мёг",
-        каз: "кяз",
-        нра: "нья",
         по: "пё",
         со: "сё",
         га: "гя",
@@ -60,24 +73,11 @@ telegramBot.on("message", (msg) => {
         на: "ня",
         мо: "мё",
         ры: "ьы",
-        пре: "пье",
-        про: "пьё",
         ше: "се",
         че: "те",
-        стве: "тьве",
         жи: "зи",
-        если: "еси",
-        луж: "люзь",
         ом: "ём",
-        пра: "пья",
-        при: "пьи",
-        пла: "пья",
-        вле: "вье",
         ре: "йе",
-        рует: "ует",
-        инг: "инк",
-        тра: "тря",
-        из: "изь",
       };
 
       var regex = new RegExp(Object.keys(mapObj).join("|"), "gi");
@@ -86,7 +86,9 @@ telegramBot.on("message", (msg) => {
         return mapObj[matched.toLowerCase()];
       });
 
-      telegramBot.sendMessage(chatId, res);
+      telegramBot.sendMessage(chatId, res, {
+        reply_to_message_id: msg.message_id,
+      });
     }
   }
 });

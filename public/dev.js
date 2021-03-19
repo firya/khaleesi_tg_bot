@@ -1,4 +1,4 @@
-const ngrockUrl = "https://6617bd400c83.eu.ngrok.io"; // for local use
+const ngrockUrl = "https://072290710956.eu.ngrok.io"; // for local use
 export const hostURL =
   process.env.NODE_ENV == "development"
     ? `${ngrockUrl}`
