@@ -20,7 +20,8 @@ telegramBot.on("message", (msg) => {
 
     if (
       responseStatus &&
-      ((chatType == "supergroup" && msg.text.length > 42) ||
+      msg.text.length <= 280 &&
+      ((chatType == "supergroup" && msg.text.length >= 42) ||
         chatType == "private")
     ) {
       const inputStr = msg.text;
