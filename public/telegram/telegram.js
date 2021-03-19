@@ -15,14 +15,17 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 5 : 100;
 
+  var nahuiArr = ["пошел нахуй", "пошёл нахуй", "пошел на хуй", "пошёл на хуй"];
+
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
 
     if (
-      responseStatus &&
-      msg.text.length <= 280 &&
-      ((chatType == "supergroup" && msg.text.length >= 21) ||
-        chatType == "private")
+      (responseStatus &&
+        msg.text.length <= 280 &&
+        ((chatType == "supergroup" && msg.text.length >= 21) ||
+          chatType == "private")) ||
+      nahuiArr.indexOf(msg.text.toLowerCase()) != -1
     ) {
       const inputStr = msg.text;
 
@@ -32,6 +35,7 @@ telegramBot.on("message", (msg) => {
         аешь: "аишь",
         если: "еси",
         рует: "ует",
+        оше: "ёсё",
         ячи: "яти",
         так: "тяк",
         что: "сто",
