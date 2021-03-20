@@ -13,7 +13,7 @@ telegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 2 : 100;
+  const resChance = chatType == "supergroup" ? 3 : 100;
 
   var nahuiArr = ["пошел нахуй", "пошёл нахуй", "пошел на хуй", "пошёл на хуй"];
 
@@ -89,6 +89,7 @@ telegramBot.on("message", (msg) => {
         бле: "бье",
         але: "айе",
         кно: "кнё",
+        еш: "есь",
         ач: "ась",
         ур: "уй",
         чи: "ти",
