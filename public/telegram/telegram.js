@@ -15,7 +15,16 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 3 : 100;
 
-  var nahuiArr = ["пошел нахуй", "пошёл нахуй", "пошел на хуй", "пошёл на хуй"];
+  var nahuiArr = [
+    "пошел нахуй",
+    "пошёл нахуй",
+    "пошел на хуй",
+    "пошёл на хуй",
+    "пошла нахуй",
+    "пошла на хуй",
+    "иди нахуй",
+    "иди на хуй",
+  ];
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
