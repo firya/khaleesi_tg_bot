@@ -72,6 +72,8 @@ telegramBot.on("message", (msg) => {
         учё: "утё",
         уче: "утё",
         хуй: "хюй",
+        шло: "шьо",
+        ел: "еь",
         иш: "ись",
         цу: "цю",
         за: "зя",
@@ -105,6 +107,7 @@ telegramBot.on("message", (msg) => {
         жи: "зи",
         ом: "ём",
         ре: "йе",
+        ра: "йа",
       };
 
       var regex = new RegExp(Object.keys(mapObj).join("|"), "gi");
