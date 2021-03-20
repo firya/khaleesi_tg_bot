@@ -39,6 +39,7 @@ telegramBot.on("message", (msg) => {
       const inputStr = msg.text;
 
       var mapObj = {
+        ошла: "осьля",
         ошиб: "ашип",
         стве: "тьве",
         аешь: "аишь",
