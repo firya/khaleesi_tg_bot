@@ -196,15 +196,15 @@ telegramBot.on("message", (msg) => {
         reply_to_message_id: msg.message_id,
       });
 
-      sendStat("outgoing", msg);
+      sendStat("outgoing", msg, res);
     }
   }
 });
 
-function sendStat(type, msg) {
+function sendStat(type, msg, replay = "") {
   var chatName = msg.chat.type == "supergroup" ? msg.chat.username : "private";
   const data = JSON.stringify({
-    text: "Bot replay",
+    text: replay,
     userId: chatName,
   });
 
