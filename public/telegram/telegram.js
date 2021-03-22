@@ -217,10 +217,8 @@ function sendStat(type, msg, replay = "") {
     },
   };
 
-  console.log(options);
-
   const req = https.request(options, (res) => {
-    console.log(`statusCode: ${res.statusCode}`);
+    // console.log(`statusCode: ${res.statusCode}`);
 
     res.on("data", (d) => {
       process.stdout.write(d);
