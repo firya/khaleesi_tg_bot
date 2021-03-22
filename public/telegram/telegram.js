@@ -21,7 +21,7 @@ telegramBot.on("message", (msg) => {
   // sendStat("incoming", msg, msg.text);
 
   var nahuiReg = new RegExp(
-    "(по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й)",
+    "(((по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й))|((н[а|я]\\s?х[у|ю]й)\\s(по[а-ё]+|иди)))",
     "gi"
   );
 
