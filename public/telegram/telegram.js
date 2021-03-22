@@ -13,7 +13,7 @@ telegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 3 : 100;
+  const resChance = chatType == "supergroup" ? 2 : 100;
 
   var nahuiReg = new RegExp("(по[а-ё]+|иди)\\s(н[а|я]\\s?х[у|ю]й)", "gi");
 
