@@ -15,16 +15,7 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 3 : 100;
 
-  var nahuiArr = [
-    "пошел нахуй",
-    "пошёл нахуй",
-    "пошел на хуй",
-    "пошёл на хуй",
-    "пошла нахуй",
-    "пошла на хуй",
-    "иди нахуй",
-    "иди на хуй",
-  ];
+  var nahuiReg = new RegExp("(по[а-ё]+|иди)s(н[а|я]s?х[у|ю]й)", "gi");
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
@@ -34,7 +25,7 @@ telegramBot.on("message", (msg) => {
         msg.text.length <= 280 &&
         ((chatType == "supergroup" && msg.text.length >= 21) ||
           chatType == "private")) ||
-      nahuiArr.indexOf(msg.text.toLowerCase()) != -1
+      nahuiReg.search(msg) != -1
     ) {
       const inputStr = msg.text;
 
