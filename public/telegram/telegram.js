@@ -15,7 +15,30 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 2 : 100;
 
-  var nahuiReg = new RegExp("(по[а-ё]+|иди)\\s(н[а|я]\\s?х[у|ю]й)", "gi");
+  var nahuiReg = new RegExp(
+    "(по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й)",
+    "gi"
+  );
+
+  const nahuiStickers = [
+    {
+      set_name: "sp51819781793b042aab98ea377eb6182a_by_stckrRobot",
+      file_unique_id: "AgADegEAApXcYho",
+      text: "Рекомендация для вас: Иди на хуй",
+    },
+  ];
+
+  if (msg.hasOwnProperty("sticker")) {
+    for (let i = 0; i < nahuiStickers.length; i++) {
+      if (
+        msg.sticker.set_name == nahuiStickers[i].set_name &&
+        msg.sticker.file_unique_id == nahuiStickers[i].file_unique_id
+      ) {
+        msg.text = nahuiStickers[i].text;
+        break;
+      }
+    }
+  }
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
