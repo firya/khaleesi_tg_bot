@@ -15,7 +15,7 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 3 : 100;
 
-  var nahuiReg = new RegExp("(по[а-ё]+|иди)s(н[а|я]s?х[у|ю]й)", "gi");
+  var nahuiReg = new RegExp("(по[а-ё]+|иди)\\s(н[а|я]\\s?х[у|ю]й)", "gi");
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
