@@ -206,8 +206,6 @@ function sendStat(type, msg, replay = "") {
     userId: chatName,
   });
 
-  console.log(data);
-
   const options = {
     hostname: "tracker.dashbot.io",
     port: 443,
@@ -219,8 +217,10 @@ function sendStat(type, msg, replay = "") {
     },
   };
 
+  console.log(options);
+
   const req = https.request(options, (res) => {
-    // console.log(`statusCode: ${res.statusCode}`);
+    console.log(`statusCode: ${res.statusCode}`);
 
     res.on("data", (d) => {
       process.stdout.write(d);
