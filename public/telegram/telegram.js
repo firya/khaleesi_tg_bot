@@ -205,10 +205,10 @@ function sendStat(type, msg, replay = "") {
   var chatName = msg.chat.type == "supergroup" ? msg.chat.title : "private";
   const data = JSON.stringify({
     text: replay,
-    userId: msg.from.id,
-    platformJson: {
-      groupName: chatName,
-    },
+    userId: chatName,
+    // platformJson: {
+    //   groupName: chatName,
+    // },
   });
 
   const options = {
