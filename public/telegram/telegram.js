@@ -18,6 +18,8 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 2 : 100;
 
+  sendStat("incoming", msg, msg.text);
+
   var nahuiReg = new RegExp(
     "(по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й)",
     "gi"
@@ -200,20 +202,22 @@ telegramBot.on("message", (msg) => {
 });
 
 function sendStat(type, msg, replay = "") {
-  var chatName = msg.chat.type == "supergroup" ? msg.chat.username : "private";
+  var chatName = msg.chat.type == "supergroup" ? msg.chat.title : "private";
   const data = JSON.stringify({
     text: replay,
-    userId: chatName,
+    userId: msg.from.id,
+    platformJson: {
+      groupName: chatName,
+    },
   });
 
   const options = {
     hostname: "tracker.dashbot.io",
     port: 443,
-    path: `/track?platform=universal&v=10.1.1-rest&type=${type}&apiKey=${dashbotToken}`,
+    path: `/track?platform=universal&v=11.1.1-rest&type=${type}&apiKey=${dashbotToken}`,
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "content-length": data.length,
     },
   };
 
