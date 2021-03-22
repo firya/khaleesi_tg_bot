@@ -25,7 +25,7 @@ telegramBot.on("message", (msg) => {
         msg.text.length <= 280 &&
         ((chatType == "supergroup" && msg.text.length >= 21) ||
           chatType == "private")) ||
-      nahuiReg.search(msg) != -1
+      msg.search(nahuiReg) != -1
     ) {
       const inputStr = msg.text;
 
