@@ -16,8 +16,6 @@ telegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  // sendStat("incoming", msg);
-
   const resChance = chatType == "supergroup" ? 2 : 100;
 
   var nahuiReg = new RegExp(
@@ -207,6 +205,8 @@ function sendStat(type, msg, replay = "") {
     text: replay,
     userId: chatName,
   });
+
+  console.log(data);
 
   const options = {
     hostname: "tracker.dashbot.io",
