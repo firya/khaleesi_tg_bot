@@ -1,17 +1,22 @@
 import TelegramBot from "node-telegram-bot-api";
 
 import { hostURL } from "../dev.js";
+import https from "https";
 
 const token = process.env.TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 
 export const telegramBot = new TelegramBot(token);
 
+const dashbotToken = process.env.DASHBOT_API_TOKEN;
+
 telegramBot.setWebHook(url);
 
 telegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
+
+  // sendStat("incoming", msg);
 
   const resChance = chatType == "supergroup" ? 2 : 100;
 
@@ -190,6 +195,42 @@ telegramBot.on("message", (msg) => {
       telegramBot.sendMessage(chatId, res, {
         reply_to_message_id: msg.message_id,
       });
+
+      sendStat("outgoing", msg);
     }
   }
 });
+
+function sendStat(type, msg) {
+  var chatName = msg.chat.type == "supergroup" ? msg.chat.username : "private";
+  const data = JSON.stringify({
+    text: "Bot replay",
+    userId: chatName,
+  });
+
+  const options = {
+    hostname: "tracker.dashbot.io",
+    port: 443,
+    path: `/track?platform=universal&v=10.1.1-rest&type=${type}&apiKey=${dashbotToken}`,
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "content-length": data.length,
+    },
+  };
+
+  const req = https.request(options, (res) => {
+    // console.log(`statusCode: ${res.statusCode}`);
+
+    res.on("data", (d) => {
+      process.stdout.write(d);
+    });
+  });
+
+  req.on("error", (error) => {
+    console.error(error);
+  });
+
+  req.write(data);
+  req.end();
+}

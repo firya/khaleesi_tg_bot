@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dashbot": "^11.2.3",
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "node-telegram-bot-api": "^0.50.0"
