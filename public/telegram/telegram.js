@@ -18,7 +18,7 @@ telegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 2 : 100;
 
-  sendStat("incoming", msg, msg.text);
+  // sendStat("incoming", msg, msg.text);
 
   var nahuiReg = new RegExp(
     "(по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й)",
