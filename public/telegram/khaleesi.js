@@ -3,22 +3,20 @@ import TelegramBot from "node-telegram-bot-api";
 import { hostURL } from "../dev.js";
 import https from "https";
 
-const token = process.env.TELEGRAM_TOKEN;
+const token = process.env.KHALEESI_TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 
-export const telegramBot = new TelegramBot(token);
+export const khaleesiTelegramBot = new TelegramBot(token);
 
 const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
-telegramBot.setWebHook(url);
+khaleesiTelegramBot.setWebHook(url);
 
-telegramBot.on("message", (msg) => {
+khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
   const resChance = chatType == "supergroup" ? 2 : 100;
-
-  // sendStat("incoming", msg, msg.text);
 
   var nahuiReg = new RegExp(
     "(((по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й))|((н[а|я]\\s?х[у|ю]й)\\s(по[а-ё]+|иди)))",
@@ -66,6 +64,8 @@ telegramBot.on("message", (msg) => {
         рует: "ует",
         ство: "сьво",
         тебя: "тибя",
+        меня: "миня",
+        были: "быйи",
         сыла: "сыа",
         бли: "бьи",
         очу: "отю",
@@ -194,7 +194,7 @@ telegramBot.on("message", (msg) => {
         return mapObj[matched.toLowerCase()];
       });
 
-      telegramBot.sendMessage(chatId, res, {
+      khaleesiTelegramBot.sendMessage(chatId, res, {
         reply_to_message_id: msg.message_id,
       });
 

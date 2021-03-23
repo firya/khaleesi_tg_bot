@@ -1,7 +1,8 @@
 import express from "express";
 import path from "path";
 
-import { telegramBot } from "./telegram/telegram.js";
+import { khaleesiTelegramBot } from "./telegram/khaleesi.js";
+import { cheemsTelegramBot } from "./telegram/cheems.js";
 
 const __dirname = path.resolve(path.dirname(""));
 
@@ -16,8 +17,13 @@ app.get("/", function (req, res) {
   res.send("Здесь ничего нет, уходите!");
 });
 
-app.post(`/bot${process.env.TELEGRAM_TOKEN}`, (req, res) => {
-  telegramBot.processUpdate(req.body);
+app.post(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, (req, res) => {
+  khaleesiTelegramBot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+app.post(`/bot${process.env.CHEEMS_TELEGRAM_TOKEN}`, (req, res) => {
+  cheemsTelegramBot.processUpdate(req.body);
   res.sendStatus(200);
 });
 
