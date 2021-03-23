@@ -65,7 +65,7 @@ cheemsTelegramBot.on("message", (msg) => {
           if (i > 1 && i < letters.length - 1) {
             if (
               (letters[i + 1] == "н" && letters[i] == "н") ||
-              letters[i] == "н"
+              (letters[i] == "н" && consonats.indexOf(letters[i + 1]) != -1)
             ) {
               skip = true;
             }
