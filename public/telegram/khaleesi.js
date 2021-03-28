@@ -15,7 +15,7 @@ export const khaleesiTelegramBot = new TelegramBot(token);
 const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
 const minLengthGroup = 21;
-const JaroWinklerLimit = 0.95;
+const JaroWinklerLimit = 0.96;
 
 khaleesiTelegramBot.setWebHook(url);
 
@@ -75,6 +75,7 @@ khaleesiTelegramBot.on("message", (msg) => {
         есть: "есь",
         шлют: "слють",
         буд: "буть",
+        кла: "кйа",
         унд: "унт",
         фла: "фьйа",
         бля: "бьйа",
