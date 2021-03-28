@@ -51,6 +51,7 @@ khaleesiTelegramBot.on("message", (msg) => {
       const inputStr = msg.text;
 
       var mapObj = {
+        стра: "стьйа",
         жаба: "зябя",
         вряд: "вьяд",
         ошла: "осьля",
