@@ -2,9 +2,6 @@ import natural from "natural";
 
 import { readFile } from "fs/promises";
 
-// import russianAfinnVoca from "./Russian/afinn_ru.json";
-// import russianNegations from "./Russian/negations_ru.json";
-
 export default class SentimentAnalyzer {
   constructor() {
     this.tokenizer = new natural.WordTokenizer();
