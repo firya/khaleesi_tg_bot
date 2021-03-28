@@ -54,6 +54,8 @@ export default class SentimentAnalyzer {
       score: score,
     };
 
+    console.log(info);
+
     if (debug) {
       result.info = info;
     }
