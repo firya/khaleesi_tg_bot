@@ -45,6 +45,8 @@ export default class SentimentAnalyzer {
               info.push(
                 `${stemmedWord}: ${negator * this.vocabulary[stemmedWord]}`
               );
+            } else {
+              info.push(`${stemmedWord}: null`);
             }
           }
         }
