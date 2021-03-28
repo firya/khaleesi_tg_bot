@@ -40,7 +40,7 @@ khaleesiTelegramBot.on("message", (msg) => {
           Math.random() <
           (resChance * (Math.abs(sentimentScore) + 1) * lengthMultiplier) / 100;
       } else {
-        responseStatus = false;
+        // responseStatus = false;
       }
     }
 
