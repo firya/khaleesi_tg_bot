@@ -3,6 +3,9 @@ import TelegramBot from "node-telegram-bot-api";
 import { hostURL } from "../dev.js";
 import https from "https";
 
+import SentimentAnalyzer from "../nlp.js";
+const sentimentAnalyzer = new SentimentAnalyzer();
+
 const token = process.env.KHALEESI_TELEGRAM_TOKEN;
 const url = `${hostURL}/bot${token}`;
 
@@ -16,49 +19,35 @@ khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 2 : 100;
-
-  var nahuiReg = new RegExp(
-    "(((по[а-ё]+|иди)(\\s(ты|ти))?\\s(н[а|я]\\s?х[у|ю]й))|((н[а|я]\\s?х[у|ю]й)\\s(по[а-ё]+|иди)))",
-    "gi"
-  );
-
-  const nahuiStickers = [
-    {
-      set_name: "sp51819781793b042aab98ea377eb6182a_by_stckrRobot",
-      file_unique_id: "AgADegEAApXcYho",
-      text: "Рекомендация для вас: Иди на хуй",
-    },
-  ];
-
-  if (msg.hasOwnProperty("sticker")) {
-    for (let i = 0; i < nahuiStickers.length; i++) {
-      if (
-        msg.sticker.set_name == nahuiStickers[i].set_name &&
-        msg.sticker.file_unique_id == nahuiStickers[i].file_unique_id
-      ) {
-        msg.text = nahuiStickers[i].text;
-        break;
-      }
-    }
-  }
+  const resChance = chatType == "supergroup" ? 10 : 100;
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
+    var sentiment = 0;
+
+    if (chatType == "supergroup") {
+      sentiment = sentimentAnalyzer.getSentiment(msg.text);
+
+      if (sentiment < 0) {
+        responseStatus =
+          Math.random() < (resChance * (Math.abs(sentiment) + 1)) / 100;
+      } else {
+        responseStatus = false;
+      }
+    }
 
     if (
-      (chatType != "supergroup" &&
-        responseStatus &&
-        msg.text.length <= 280 &&
-        ((chatType == "supergroup" && msg.text.length >= 21) ||
-          chatType == "private")) ||
-      msg.text.search(nahuiReg) != -1
+      responseStatus &&
+      msg.text.length <= 280 &&
+      (chatType == "private" ||
+        (chatType == "supergroup" && msg.text.length >= 21))
     ) {
       const inputStr = msg.text;
 
       var mapObj = {
         ошла: "осьля",
         ошиб: "ашип",
+        себя: "сипя",
         стве: "тьве",
         аешь: "аишь",
         если: "есьи",
@@ -71,9 +60,19 @@ khaleesiTelegramBot.on("message", (msg) => {
         сыла: "сыа",
         будь: "буть",
         есть: "есь",
-        "то ": "тьо",
+        шлют: "слють",
+        бля: "бьйа",
+        вка: "фка",
+        чну: "сьну",
+        пля: "пьйа",
+        под: "пот",
+        нет: "нит",
         тив: "тивь",
+        удо: "удьо",
+        уст: "усьть",
         чат: "чят",
+        "ну ": "ню ",
+        мне: "мьне",
         там: "тям",
         жоп: "зёп",
         бря: "бья",
@@ -152,6 +151,7 @@ khaleesiTelegramBot.on("message", (msg) => {
         тут: "туть",
         кой: "кёй",
         кто: "ктё",
+        то: "тьо",
         ец: "есь",
         ру: "ьу",
         еш: "есь",
@@ -203,6 +203,7 @@ khaleesiTelegramBot.on("message", (msg) => {
         жд: "зьд",
         зд: "сьд",
         вы: "ви",
+        "в ": "вь ",
         ъ: "ь",
       };
 
@@ -212,12 +213,21 @@ khaleesiTelegramBot.on("message", (msg) => {
         return mapObj[matched.toLowerCase()];
       });
 
-      khaleesiTelegramBot.sendMessage(chatId, res, {
-        reply_to_message_id: msg.message_id,
-      });
+      if (chatType != "supergroup") {
+        khaleesiTelegramBot.sendMessage(chatId, res, {
+          reply_to_message_id: msg.message_id,
+        });
+      }
 
       sendStat("outgoing", msg, res);
     }
+
+    khaleesiTelegramBot.sendMessage(
+      1690894,
+      `Message: ${msg.text}
+Sentiment: ${sentiment}
+Response: ${responseStatus}`
+    );
   }
 });
 
@@ -226,9 +236,6 @@ function sendStat(type, msg, replay = "") {
   const data = JSON.stringify({
     text: replay,
     userId: chatName,
-    // platformJson: {
-    //   groupName: chatName,
-    // },
   });
 
   const options = {
@@ -242,8 +249,6 @@ function sendStat(type, msg, replay = "") {
   };
 
   const req = https.request(options, (res) => {
-    // console.log(`statusCode: ${res.statusCode}`);
-
     res.on("data", (d) => {
       process.stdout.write(d);
     });

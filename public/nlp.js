@@ -1,24 +1,52 @@
 import natural from "natural";
 
-var tokenizer = new natural.WordTokenizer();
-var Analyzer = natural.SentimentAnalyzer;
-var stemmer = natural.PorterStemmerRu;
-var analyzer = new Analyzer("Russian", stemmer, "afinn");
+import { readFile } from "fs/promises";
 
-var data = [
-  "Пиздец",
-  "Пиздато",
-  "Хуево",
-  "Охуенно",
-  "Заебал",
-  "Иди нахуй",
-  "Ты пидор",
-  "Пиздец все хуево",
-  "как же охуенно",
-];
+// import russianAfinnVoca from "./Russian/afinn_ru.json";
+// import russianNegations from "./Russian/negations_ru.json";
 
-console.log(natural.PorterStemmerRu.stem("как же охуенно"));
+export default class SentimentAnalyzer {
+  constructor() {
+    this.tokenizer = new natural.WordTokenizer();
+    this.stemmer = natural.PorterStemmerRu;
 
-data.map((text) => {
-  analyzer.getSentiment(tokenizer.tokenize(natural.PorterStemmerRu.stem(text)));
-});
+    this.loadJSON();
+  }
+
+  loadJSON = async () => {
+    this.russianAfinnVoca = JSON.parse(
+      await readFile(new URL("./Russian/afinn_ru.json", import.meta.url))
+    );
+    this.russianNegations = JSON.parse(
+      await readFile(new URL("./Russian/negations_ru.json", import.meta.url))
+    );
+
+    this.vocabulary = Object.assign({}, this.russianAfinnVoca);
+  };
+
+  getSentiment = (text) => {
+    var words = this.tokenizer.tokenize(text);
+
+    let score = 0;
+    let negator = 1;
+    words.forEach((token) => {
+      const lowerCased = token.toLowerCase();
+      if (this.russianNegations.words.indexOf(lowerCased) > -1) {
+        negator = -1;
+      } else {
+        if (this.vocabulary[lowerCased] !== undefined) {
+          score += negator * this.vocabulary[lowerCased];
+        } else {
+          if (this.stemmer) {
+            const stemmedWord = this.stemmer.stem(lowerCased);
+            if (this.vocabulary[stemmedWord] !== undefined) {
+              score += negator * this.vocabulary[stemmedWord];
+            }
+          }
+        }
+      }
+    });
+    score = score / words.length;
+    return score;
+  };
+}
