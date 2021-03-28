@@ -11,6 +11,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "hbs": "^4.1.1",
+    "multilang-sentiment": "^1.2.0",
+    "natural": "^4.0.4",
     "node-telegram-bot-api": "^0.50.0"
   },
   "devDependencies": {},

@@ -47,7 +47,8 @@ khaleesiTelegramBot.on("message", (msg) => {
     var responseStatus = Math.random() < resChance / 100;
 
     if (
-      (responseStatus &&
+      (chatType != "supergroup" &&
+        responseStatus &&
         msg.text.length <= 280 &&
         ((chatType == "supergroup" && msg.text.length >= 21) ||
           chatType == "private")) ||
