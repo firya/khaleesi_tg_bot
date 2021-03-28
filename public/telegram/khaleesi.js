@@ -232,6 +232,13 @@ khaleesiTelegramBot.on("message", (msg) => {
         return mapObj[matched.toLowerCase()];
       });
 
+      var tokenizer = new natural.WordTokenizer();
+      var stemmer = natural.PorterStemmerRu;
+      var tokenized = tokenizer.tokenize(msg.text);
+      var stems = tokenized
+        .map((word) => stemmer.stem(word.toLowerCase()))
+        .join(", ");
+
       if (chatType != "supergroup") {
         khaleesiTelegramBot.sendMessage(chatId, res, {
           reply_to_message_id: msg.message_id,
@@ -241,7 +248,8 @@ khaleesiTelegramBot.on("message", (msg) => {
           `Message: ${msg.text}
 Sentiment: ${sentiment}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-Response: ${res}`
+Response: ${res}
+Stems: ${stems}`
         );
       } else {
         if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
@@ -251,7 +259,8 @@ Response: ${res}`
           `Message: ${msg.text}
 Sentiment: ${sentiment}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-Response: ${res}`
+Response: ${res}
+Stems: ${stems}`
         );
       }
 
