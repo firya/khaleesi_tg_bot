@@ -50,6 +50,7 @@ khaleesiTelegramBot.on("message", (msg) => {
       const inputStr = msg.text;
 
       var mapObj = {
+        жаба: "зябя",
         вряд: "вьяд",
         ошла: "осьля",
         ошиб: "ашип",
@@ -236,7 +237,7 @@ khaleesiTelegramBot.on("message", (msg) => {
           1690894,
           `Message: ${msg.text}
 Sentiment: ${sentiment}
-Jaro–Winkler: ${natural.JaroWinklerDistance("dixon", "dicksonx")}
+Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}`
         );
       } else {
@@ -244,7 +245,7 @@ Response: ${res}`
           1690894,
           `Message: ${msg.text}
 Sentiment: ${sentiment}
-Jaro–Winkler: ${natural.JaroWinklerDistance("dixon", "dicksonx")}
+Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}`
         );
       }
