@@ -21,11 +21,14 @@ export default class SentimentAnalyzer {
     this.vocabulary = Object.assign({}, this.russianAfinnVoca);
   };
 
-  getSentiment = (text) => {
+  getSentiment = (text, debug = false) => {
     var words = this.tokenizer.tokenize(text);
 
     let score = 0;
     let negator = 1;
+
+    var info = [];
+
     words.forEach((token) => {
       const lowerCased = token.toLowerCase();
       if (this.russianNegations.words.indexOf(lowerCased) > -1) {
@@ -33,17 +36,28 @@ export default class SentimentAnalyzer {
       } else {
         if (this.vocabulary[lowerCased] !== undefined) {
           score += negator * this.vocabulary[lowerCased];
+          info.push(`${lowerCased}: ${score}`);
         } else {
           if (this.stemmer) {
             const stemmedWord = this.stemmer.stem(lowerCased);
             if (this.vocabulary[stemmedWord] !== undefined) {
               score += negator * this.vocabulary[stemmedWord];
+              info.push(`${stemmedWord}: ${score}`);
             }
           }
         }
       }
     });
     score = score / words.length;
-    return score;
+
+    var result = {
+      score: score,
+    };
+
+    if (debug) {
+      result.info = info;
+    }
+
+    return result;
   };
 }

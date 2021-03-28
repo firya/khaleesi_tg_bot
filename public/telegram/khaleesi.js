@@ -27,17 +27,18 @@ khaleesiTelegramBot.on("message", (msg) => {
 
   if (msg.hasOwnProperty("text")) {
     var responseStatus = Math.random() < resChance / 100;
-    var sentiment = 0;
+    var sentimentScore = 0;
 
     if (chatType == "supergroup") {
-      sentiment = sentimentAnalyzer.getSentiment(msg.text);
+      var sentiment = sentimentAnalyzer.getSentiment(msg.text);
+      sentimentScore = sentiment.score;
       var lengthMultiplier =
         msg.text.length > minLengthGroup ? 1 : msg.text.length / minLengthGroup;
 
-      if (sentiment < 0) {
+      if (sentimentScore < 0) {
         responseStatus =
           Math.random() <
-          (resChance * (Math.abs(sentiment) + 1) * lengthMultiplier) / 100;
+          (resChance * (Math.abs(sentimentScore) + 1) * lengthMultiplier) / 100;
       } else {
         responseStatus = false;
       }
@@ -232,13 +233,6 @@ khaleesiTelegramBot.on("message", (msg) => {
         return mapObj[matched.toLowerCase()];
       });
 
-      var tokenizer = new natural.WordTokenizer();
-      var stemmer = natural.PorterStemmerRu;
-      var tokenized = tokenizer.tokenize(msg.text);
-      var stems = tokenized
-        .map((word) => stemmer.stem(word.toLowerCase()))
-        .join(", ");
-
       if (chatType != "supergroup") {
         khaleesiTelegramBot.sendMessage(chatId, res, {
           reply_to_message_id: msg.message_id,
@@ -246,10 +240,9 @@ khaleesiTelegramBot.on("message", (msg) => {
         khaleesiTelegramBot.sendMessage(
           1690894,
           `Message: ${msg.text}
-Sentiment: ${sentiment}
+Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-Response: ${res}
-Stems: ${stems}`
+Response: ${res}`
         );
       } else {
         if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
@@ -257,10 +250,10 @@ Stems: ${stems}`
         khaleesiTelegramBot.sendMessage(
           1690894,
           `Message: ${msg.text}
-Sentiment: ${sentiment}
+Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}
-Stems: ${stems}`
+Stems: ${sentiment.info.join("; ")}`
         );
       }
 
