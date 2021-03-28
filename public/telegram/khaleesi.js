@@ -1,4 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
+import natural from "natural";
 
 import { hostURL } from "../dev.js";
 import https from "https";
@@ -55,8 +56,12 @@ khaleesiTelegramBot.on("message", (msg) => {
         ошиб: "ашип",
         себя: "сипя",
         стве: "тьве",
+        бота: "ботя",
+        селы: "сёы",
+        сёлы: "сёы",
         аешь: "аишь",
         если: "есьи",
+        заря: "зяря",
         рует: "ует",
         ство: "сьво",
         тебя: "тибя",
@@ -67,6 +72,9 @@ khaleesiTelegramBot.on("message", (msg) => {
         будь: "буть",
         есть: "есь",
         шлют: "слють",
+        буд: "буть",
+        унд: "унт",
+        фла: "фьйа",
         бля: "бьйа",
         вка: "фка",
         чну: "сьну",
@@ -228,6 +236,7 @@ khaleesiTelegramBot.on("message", (msg) => {
           1690894,
           `Message: ${msg.text}
 Sentiment: ${sentiment}
+Jaro–Winkler: ${natural.JaroWinklerDistance("dixon", "dicksonx")}
 Response: ${res}`
         );
       } else {
@@ -235,6 +244,7 @@ Response: ${res}`
           1690894,
           `Message: ${msg.text}
 Sentiment: ${sentiment}
+Jaro–Winkler: ${natural.JaroWinklerDistance("dixon", "dicksonx")}
 Response: ${res}`
         );
       }
