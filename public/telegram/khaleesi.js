@@ -15,6 +15,7 @@ export const khaleesiTelegramBot = new TelegramBot(token);
 const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
 const minLengthGroup = 21;
+const JaroWinklerLimit = 0.95;
 
 khaleesiTelegramBot.setWebHook(url);
 
@@ -241,6 +242,8 @@ Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}`
         );
       } else {
+        if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
+        }
         khaleesiTelegramBot.sendMessage(
           1690894,
           `Message: ${msg.text}
