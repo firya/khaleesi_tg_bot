@@ -217,17 +217,18 @@ khaleesiTelegramBot.on("message", (msg) => {
         khaleesiTelegramBot.sendMessage(chatId, res, {
           reply_to_message_id: msg.message_id,
         });
+      } else {
+        khaleesiTelegramBot.sendMessage(
+          1690894,
+          `Message: ${msg.text}
+      Sentiment: ${sentiment}
+      Response: ${res}
+Response: ${responseStatus}`
+        );
       }
 
       sendStat("outgoing", msg, res);
     }
-
-    khaleesiTelegramBot.sendMessage(
-      1690894,
-      `Message: ${msg.text}
-Sentiment: ${sentiment}
-Response: ${responseStatus}`
-    );
   }
 });
 
