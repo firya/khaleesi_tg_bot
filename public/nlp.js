@@ -36,13 +36,15 @@ export default class SentimentAnalyzer {
       } else {
         if (this.vocabulary[lowerCased] !== undefined) {
           score += negator * this.vocabulary[lowerCased];
-          info.push(`${lowerCased}: ${score}`);
+          info.push(`${lowerCased}: ${negator * this.vocabulary[lowerCased]}`);
         } else {
           if (this.stemmer) {
             const stemmedWord = this.stemmer.stem(lowerCased);
             if (this.vocabulary[stemmedWord] !== undefined) {
               score += negator * this.vocabulary[stemmedWord];
-              info.push(`${stemmedWord}: ${score}`);
+              info.push(
+                `${stemmedWord}: ${negator * this.vocabulary[stemmedWord]}`
+              );
             }
           }
         }
@@ -53,8 +55,6 @@ export default class SentimentAnalyzer {
     var result = {
       score: score,
     };
-
-    console.log(info);
 
     if (debug) {
       result.info = info;
