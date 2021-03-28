@@ -13,6 +13,8 @@ export const khaleesiTelegramBot = new TelegramBot(token);
 
 const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
+const minLengthGroup = 21;
+
 khaleesiTelegramBot.setWebHook(url);
 
 khaleesiTelegramBot.on("message", (msg) => {
@@ -27,10 +29,13 @@ khaleesiTelegramBot.on("message", (msg) => {
 
     if (chatType == "supergroup") {
       sentiment = sentimentAnalyzer.getSentiment(msg.text);
+      var lengthMultiplier =
+        msg.text.length > minLengthGroup ? 1 : msg.text.length / minLengthGroup;
 
       if (sentiment < 0) {
         responseStatus =
-          Math.random() < (resChance * (Math.abs(sentiment) + 1)) / 100;
+          Math.random() <
+          (resChance * (Math.abs(sentiment) + 1) * lengthMultiplier) / 100;
       } else {
         responseStatus = false;
       }
@@ -39,9 +44,8 @@ khaleesiTelegramBot.on("message", (msg) => {
     if (
       responseStatus &&
       msg.text.length <= 280 &&
-      (chatType == "private" ||
-        chatType == "supergroup")
-        //  && msg.text.length >= 21
+      (chatType == "private" || chatType == "supergroup")
+      //  && msg.text.length >= 21
     ) {
       const inputStr = msg.text;
 
