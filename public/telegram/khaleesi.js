@@ -23,7 +23,7 @@ khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 100 : 100;
+  const resChance = chatType == "supergroup" ? 2 : 100;
 
   if (msg.hasOwnProperty("text")) {
     var responseStatus = Math.random() < resChance / 100;
@@ -40,7 +40,7 @@ khaleesiTelegramBot.on("message", (msg) => {
           Math.random() <
           (resChance * (Math.abs(sentimentScore) + 1) * lengthMultiplier) / 100;
       } else {
-        // responseStatus = false;
+        responseStatus = false;
       }
     }
 
@@ -171,6 +171,7 @@ khaleesiTelegramBot.on("message", (msg) => {
         тут: "туть",
         кой: "кёй",
         кто: "ктё",
+        эрг: "эйг",
         то: "тьо",
         ец: "есь",
         ру: "ьу",
