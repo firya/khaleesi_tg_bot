@@ -10,6 +10,7 @@ import SentimentAnalyzer from "../nlp.js";
 const sentimentAnalyzer = new SentimentAnalyzer();
 
 const token = process.env.KHALEESI_TELEGRAM_TOKEN;
+const debugChatId = process.env.DEBUG_CHAT_ID;
 const url = `${hostURL}/bot${token}`;
 
 export const khaleesiTelegramBot = new TelegramBot(token);
@@ -64,7 +65,7 @@ khaleesiTelegramBot.on("message", (msg) => {
           reply_to_message_id: msg.message_id,
         });
         khaleesiTelegramBot.sendMessage(
-          1690894,
+          debugChatId,
           `Message: ${msg.text}
 Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
@@ -76,7 +77,7 @@ Response: ${res}`
         if (sentimentScore < 0) {
           var stems = sentiment.info ? sentiment.info.join("; ") : "";
           khaleesiTelegramBot.sendMessage(
-            1690894,
+            debugChatId,
             `Message: ${msg.text}
   Sentiment: ${sentimentScore}
   Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
