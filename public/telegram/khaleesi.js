@@ -74,17 +74,15 @@ Response: ${res}`
       } else {
         if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
         }
-        if (sentimentScore < 0) {
-          var stems = sentiment.info ? sentiment.info.join("; ") : "";
-          khaleesiTelegramBot.sendMessage(
-            debugChatId,
-            `Message: ${msg.text}
-  Sentiment: ${sentimentScore}
-  Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-  Response: ${res}
-  Stems: ${stems}`
-          );
-        }
+        var stems = sentiment.info ? sentiment.info.join("; ") : "";
+        khaleesiTelegramBot.sendMessage(
+          debugChatId,
+          `Message: ${msg.text}
+Sentiment: ${sentimentScore}
+Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
+Response: ${res}
+Stems: ${stems}`
+        );
       }
 
       sendStat("outgoing", msg, res);
