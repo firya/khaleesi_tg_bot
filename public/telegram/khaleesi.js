@@ -25,7 +25,7 @@ khaleesiTelegramBot.on("message", (msg) => {
 
   const resChance = chatType == "supergroup" ? 20 : 100;
 
-  if (msg.hasOwnProperty("text")) {
+  if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
     var sentimentScore = 0;
 
