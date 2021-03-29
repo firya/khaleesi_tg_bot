@@ -248,7 +248,7 @@ Response: ${res}`
       } else {
         if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
         }
-        if (sentimentScore != 0) {
+        if (sentimentScore < 0) {
           var stems = sentiment.info ? sentiment.info.join("; ") : "";
           khaleesiTelegramBot.sendMessage(
             1690894,
