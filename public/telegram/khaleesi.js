@@ -23,7 +23,7 @@ khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 5 : 100;
+  const resChance = chatType == "supergroup" ? 20 : 100;
 
   if (msg.hasOwnProperty("text")) {
     var responseStatus = Math.random() < resChance / 100;
