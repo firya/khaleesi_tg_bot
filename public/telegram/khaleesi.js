@@ -52,7 +52,7 @@ khaleesiTelegramBot.on("message", (msg) => {
     if (
       msg.text.indexOf("?") == -1 &&
       responseStatus &&
-      msg.text.length <= 280 &&
+      msg.text.length <= 140 &&
       (chatType == "private" || chatType == "supergroup")
     ) {
       const inputStr = msg.text;
