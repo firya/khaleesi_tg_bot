@@ -18,7 +18,7 @@ export const khaleesiTelegramBot = new TelegramBot(token);
 const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
 const minLengthGroup = 21;
-const JaroWinklerLimit = 0.96;
+const JaroWinklerLimit = 0.95;
 
 khaleesiTelegramBot.setWebHook(url);
 
