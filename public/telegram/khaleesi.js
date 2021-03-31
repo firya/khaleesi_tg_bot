@@ -50,6 +50,7 @@ khaleesiTelegramBot.on("message", (msg) => {
     }
 
     if (
+      msg.text.indexOf("?") == -1 &&
       responseStatus &&
       msg.text.length <= 280 &&
       (chatType == "private" || chatType == "supergroup")
