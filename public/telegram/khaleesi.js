@@ -26,7 +26,7 @@ khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const chatType = msg.chat.type;
 
-  const resChance = chatType == "supergroup" ? 2 : 100;
+  const resChance = chatType == "supergroup" ? 5 : 100;
 
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
@@ -75,16 +75,16 @@ Response: ${res}`
         );
       } else {
         if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
-        }
-        var stems = sentiment.info ? sentiment.info.join("; ") : "";
-        khaleesiTelegramBot.sendMessage(
-          debugChatId,
-          `Message: ${msg.text}
+          var stems = sentiment.info ? sentiment.info.join("; ") : "";
+          khaleesiTelegramBot.sendMessage(
+            debugChatId,
+            `Message: ${msg.text}
 Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}
 Stems: ${stems}`
-        );
+          );
+        }
       }
 
       sendStat("outgoing", msg, res);
