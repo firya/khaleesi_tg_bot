@@ -63,7 +63,11 @@ khaleesiTelegramBot.on("message", (msg) => {
         return replaces[matched.toLowerCase()];
       });
 
-      if (chatType != "supergroup") {
+      if (
+        chatType != "supergroup" ||
+        (chatType == "supergroup" &&
+          natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit)
+      ) {
         khaleesiTelegramBot.sendMessage(chatId, res, {
           reply_to_message_id: msg.message_id,
         });
@@ -74,18 +78,6 @@ Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}`
         );
-      } else {
-        if (natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit) {
-          var stems = sentiment.info ? sentiment.info.join("; ") : "";
-          khaleesiTelegramBot.sendMessage(
-            debugChatId,
-            `Message: ${msg.text}
-Sentiment: ${sentimentScore}
-Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-Response: ${res}
-Stems: ${stems}`
-          );
-        }
       }
 
       sendStat("outgoing", msg, res);
