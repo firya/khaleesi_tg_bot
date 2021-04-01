@@ -36,9 +36,7 @@ khaleesiTelegramBot.on("message", (msg) => {
       var sentiment = sentimentAnalyzer.getSentiment(msg.text, true);
       sentimentScore = sentiment.score;
       var lengthMultiplier =
-        msg.text.length > minLengthGroup
-          ? 1
-          : msg.text.length / (minLengthGroup * 2);
+        msg.text.length > minLengthGroup ? 1 : msg.text.length / minLengthGroup;
 
       if (sentimentScore < 0) {
         responseStatus =
