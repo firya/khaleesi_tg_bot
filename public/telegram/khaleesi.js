@@ -31,9 +31,10 @@ khaleesiTelegramBot.on("message", (msg) => {
   if (msg.hasOwnProperty("text") && !msg.hasOwnProperty("entities")) {
     var responseStatus = Math.random() < resChance / 100;
     var sentimentScore = 0;
+    var sentiment = null;
 
     if (chatType == "supergroup") {
-      var sentiment = sentimentAnalyzer.getSentiment(msg.text, true);
+      sentiment = sentimentAnalyzer.getSentiment(msg.text, true);
       sentimentScore = sentiment.score;
       var lengthMultiplier =
         msg.text.length > minLengthGroup ? 1 : msg.text.length / minLengthGroup;
