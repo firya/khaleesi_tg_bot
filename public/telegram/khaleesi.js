@@ -69,12 +69,14 @@ khaleesiTelegramBot.on("message", (msg) => {
         khaleesiTelegramBot.sendMessage(chatId, res, {
           reply_to_message_id: msg.message_id,
         });
+        var stems = sentiment.info ? sentiment.info.join("; ") : "";
         khaleesiTelegramBot.sendMessage(
           debugChatId,
           `Message: ${msg.text}
 Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
-Response: ${res}`
+Response: ${res}
+Stems: ${stems}`
         );
       }
 
