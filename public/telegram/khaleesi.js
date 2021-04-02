@@ -32,6 +32,7 @@ khaleesiTelegramBot.on("message", (msg) => {
     var responseStatus = Math.random() < resChance / 100;
     var sentimentScore = 0;
     var sentiment = null;
+    var chance = 1;
 
     if (chatType == "supergroup") {
       sentiment = sentimentAnalyzer.getSentiment(msg.text, true);
@@ -39,10 +40,11 @@ khaleesiTelegramBot.on("message", (msg) => {
       var lengthMultiplier =
         msg.text.length > minLengthGroup ? 1 : msg.text.length / minLengthGroup;
 
+      var chance =
+        (resChance * (Math.abs(sentimentScore) + 1) * lengthMultiplier) / 100;
+
       if (sentimentScore < 0) {
-        responseStatus =
-          Math.random() <
-          (resChance * (Math.abs(sentimentScore) + 1) * lengthMultiplier) / 100;
+        responseStatus = Math.random() < chance;
       } else {
         responseStatus = false;
       }
@@ -78,7 +80,8 @@ khaleesiTelegramBot.on("message", (msg) => {
 Sentiment: ${sentimentScore}
 Jaro–Winkler: ${natural.JaroWinklerDistance(msg.text, res)}
 Response: ${res}
-Stems: ${stems}`
+Stems: ${stems}
+Chance: ${chance}`
         );
       }
 
