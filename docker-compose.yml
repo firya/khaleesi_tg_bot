@@ -3,11 +3,9 @@ version: "3.7"
 services:
   node:
     build:
-      context: .
+      context: ./public
       dockerfile: Dockerfile
     container_name: "${CONTAINER_NAME}_node"
-    volumes:
-      - ./public:/home/node/app
     restart: unless-stopped
     environment:
       - NODE_ENV=$NODE_ENV
@@ -21,5 +19,4 @@ services:
 
 networks:
   default:
-    external:
-      name: nginx-proxy
+    name: nginx-proxy
