@@ -17,6 +17,10 @@ app.get("/", function (req, res) {
   res.send("Здесь ничего нет, уходите!");
 });
 
+app.get(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, (req, res) => {
+  res.send("Khaleesi bot");
+});
+
 app.post(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, (req, res) => {
   khaleesiTelegramBot.processUpdate(req.body);
   res.sendStatus(200);
