@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.17.1",
     "hbs": "^4.1.1",
     "multilang-sentiment": "^1.2.0",
     "natural": "^4.0.4",
     "node-telegram-bot-api": "^0.50.0"
   },
-  "devDependencies": {},
   "description": ""
 }

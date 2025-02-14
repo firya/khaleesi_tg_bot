@@ -1,0 +1,21 @@
+services:
+  telegram-bot:
+    build: .
+    container_name: khaleesi
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.khaleesi.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.khaleesi.tls=true"
+      - "traefik.http.routers.khaleesi.tls.certresolver=letsencrypt"
+      - "traefik.http.services.khaleesi.loadbalancer.server.port=80"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
