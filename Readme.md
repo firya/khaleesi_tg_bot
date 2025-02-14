@@ -8,6 +8,8 @@
 А еще есть Чимс
 [Ссылка на бота](https://t.me/cheems_tg_bot)
 
+## Для работы необходимо
+Создать `.env` файл с `KHALEESI_TELEGRAM_TOKEN` и `CHEEMS_TELEGRAM_TOKEN` (посмотреть можно в телеграм боте @BotFather)
 
 ## To set webhookurl
 `https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url=https://{BOT_DOMAIN}`
