@@ -1,22 +1,17 @@
 import TelegramBot from "node-telegram-bot-api";
 import natural from "natural";
 
-import { hostURL } from "../dev.js";
-
 import replaces from "./replaces.js";
 
 import SentimentAnalyzer from "../nlp.js";
 const sentimentAnalyzer = new SentimentAnalyzer();
 
 const token = process.env.KHALEESI_TELEGRAM_TOKEN;
-const url = `${hostURL}/bot${token}`;
 
 export const khaleesiTelegramBot = new TelegramBot(token);
 
 const minLengthGroup = 21;
 const JaroWinklerLimit = 0.95;
-
-khaleesiTelegramBot.setWebHook(url);
 
 khaleesiTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;

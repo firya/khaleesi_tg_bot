@@ -1,13 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
 
-import { hostURL } from "../dev.js";
-
 const token = process.env.CHEEMS_TELEGRAM_TOKEN;
-const url = `${hostURL}/bot${token}`;
 
 export const cheemsTelegramBot = new TelegramBot(token);
-
-cheemsTelegramBot.setWebHook(url);
 
 cheemsTelegramBot.on("message", (msg) => {
   const chatId = msg.chat.id;
