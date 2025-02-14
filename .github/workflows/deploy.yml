@@ -1,0 +1,63 @@
+name: Deploy to VPS
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        env:
+          # Add your variables here
+          DOMAIN: ${{ vars.DOMAIN }}
+          # Add your secrets here
+          KHALEESI_TELEGRAM_TOKEN: ${{ secrets.KHALEESI_TELEGRAM_TOKEN }}
+          CHEEMS_TELEGRAM_TOKEN: ${{ secrets.CHEEMS_TELEGRAM_TOKEN }}
+        run: |
+          # Create .env file from environment variables
+          env | grep -E '^(DOMAIN|.*_TELEGRAM_TOKEN)=' > .env
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Deploy to VPS
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          # Copy .env file to VPS
+          scp -o StrictHostKeyChecking=no .env $SSH_USER@$SSH_HOST:/opt/apps/$REPO_NAME/.env
+          
+          # Deploy
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+            # Ensure directory exists
+            mkdir -p /opt/apps/$REPO_NAME
+            cd /opt/apps/$REPO_NAME
+          
+            # Pull latest changes
+            git pull || git clone https://github.com/${{ github.repository }}.git .
+          
+            # Set proper permissions for .env
+            chmod 600 .env
+          
+            # Restart container
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
+          EOF
+
+      - name: Set Telegram Webhooks
+        if: success()
+        run: |
+          sleep 5
+          curl -s "https://api.telegram.org/bot${{ secrets.KHALEESI_TELEGRAM_TOKEN }}/setWebhook?url=https://${{ vars.DOMAIN }}/bot${{ secrets.KHALEESI_TELEGRAM_TOKEN }}"
+          curl -s "https://api.telegram.org/bot${{ secrets.CHEEMS_TELEGRAM_TOKEN }}/setWebhook?url=https://${{ vars.DOMAIN }}/bot${{ secrets.CHEEMS_TELEGRAM_TOKEN }}"
