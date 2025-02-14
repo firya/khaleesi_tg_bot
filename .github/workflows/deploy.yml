@@ -40,10 +40,3 @@ jobs:
             docker-compose pull
             docker-compose up -d
           EOF
-
-      - name: Set Telegram Webhooks
-        if: success()
-        run: |
-          sleep 5
-          curl -s "https://api.telegram.org/bot${{ secrets.KHALEESI_TELEGRAM_TOKEN }}/setWebhook?url=https://${{ vars.DOMAIN }}/bot${{ secrets.KHALEESI_TELEGRAM_TOKEN }}"
-          curl -s "https://api.telegram.org/bot${{ secrets.CHEEMS_TELEGRAM_TOKEN }}/setWebhook?url=https://${{ vars.DOMAIN }}/bot${{ secrets.CHEEMS_TELEGRAM_TOKEN }}"

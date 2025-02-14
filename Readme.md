@@ -7,3 +7,10 @@
 
 А еще есть Чимс
 [Ссылка на бота](https://t.me/cheems_tg_bot)
+
+
+## To set webhookurl
+`https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url=https://{BOT_DOMAIN}`
+
+## To get webhookurl
+`https://api.telegram.org/bot{BOT_TOKEN}/getWebhookInfo`
