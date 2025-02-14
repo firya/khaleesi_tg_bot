@@ -1,5 +1,5 @@
 services:
-  telegram-bot:
+  khaleesi:
     build: .
     container_name: khaleesi
     restart: unless-stopped
