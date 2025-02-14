@@ -11,17 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create .env file
-        env:
-          # Add your variables here
-          DOMAIN: ${{ vars.DOMAIN }}
-          # Add your secrets here
-          KHALEESI_TELEGRAM_TOKEN: ${{ secrets.KHALEESI_TELEGRAM_TOKEN }}
-          CHEEMS_TELEGRAM_TOKEN: ${{ secrets.CHEEMS_TELEGRAM_TOKEN }}
-        run: |
-          # Create .env file from environment variables
-          env | grep -E '^(DOMAIN|.*_TELEGRAM_TOKEN)=' > .env
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
