@@ -2,7 +2,6 @@ import TelegramBot from "node-telegram-bot-api";
 import natural from "natural";
 
 import { hostURL } from "../dev.js";
-import https from "https";
 
 import replaces from "./replaces.js";
 
@@ -10,12 +9,9 @@ import SentimentAnalyzer from "../nlp.js";
 const sentimentAnalyzer = new SentimentAnalyzer();
 
 const token = process.env.KHALEESI_TELEGRAM_TOKEN;
-const debugChatId = process.env.DEBUG_CHAT_ID;
 const url = `${hostURL}/bot${token}`;
 
 export const khaleesiTelegramBot = new TelegramBot(token);
-
-const dashbotToken = process.env.DASHBOT_API_TOKEN;
 
 const minLengthGroup = 21;
 const JaroWinklerLimit = 0.95;
@@ -84,39 +80,7 @@ khaleesiTelegramBot.on("message", (msg) => {
         // Chance: ${chance}`
         //         );
       }
-
-      sendStat("outgoing", msg, res);
     }
   }
 });
 
-function sendStat(type, msg, replay = "") {
-  var chatName = msg.chat.type == "supergroup" ? msg.chat.title : "private";
-  const data = JSON.stringify({
-    text: replay,
-    userId: chatName,
-  });
-
-  const options = {
-    hostname: "tracker.dashbot.io",
-    port: 443,
-    path: `/track?platform=universal&v=11.1.1-rest&type=${type}&apiKey=${dashbotToken}`,
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-  };
-
-  const req = https.request(options, (res) => {
-    res.on("data", (d) => {
-      process.stdout.write(d);
-    });
-  });
-
-  req.on("error", (error) => {
-    console.error(error);
-  });
-
-  req.write(data);
-  req.end();
-}
