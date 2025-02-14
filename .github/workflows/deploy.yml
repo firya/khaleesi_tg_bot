@@ -23,9 +23,6 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          # Copy .env file to VPS
-          scp -o StrictHostKeyChecking=no .env $SSH_USER@$SSH_HOST:/opt/apps/$REPO_NAME/.env
-          
           # Deploy
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
             # Ensure directory exists
