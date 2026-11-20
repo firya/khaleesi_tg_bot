@@ -4,7 +4,7 @@
   "type": "module",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "start": "node index.js"
   },
   "author": "",
@@ -12,10 +12,11 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.17.1",
-    "hbs": "^4.1.1",
-    "multilang-sentiment": "^1.2.0",
-    "natural": "^4.0.4",
-    "node-telegram-bot-api": "^0.50.0"
+    "natural": "^5.2.4",
+    "node-telegram-bot-api": "^2.4.0"
   },
-  "description": ""
+  "description": "",
+  "overrides": {
+    "qs@6": "^6.16.0"
+  }
 }

@@ -1,11 +1,12 @@
-import TelegramBot from "node-telegram-bot-api";
+import { Bot } from "node-telegram-bot-api";
 
 const token = process.env.CHEEMS_TELEGRAM_TOKEN;
 
-export const cheemsTelegramBot = new TelegramBot(token);
+export const cheemsTelegramBot = new Bot(token);
+cheemsTelegramBot.catch((error) => { throw error; });
 
-cheemsTelegramBot.on("message", (msg) => {
-  const chatId = msg.chat.id;
+cheemsTelegramBot.on("message", async (ctx) => {
+  const msg = ctx.message;
   const chatType = msg.chat.type;
 
   const resChance = chatType == "supergroup" ? 2 : 100;
@@ -86,14 +87,17 @@ cheemsTelegramBot.on("message", (msg) => {
         replaceList[word] = result;
       });
 
-      var regex = new RegExp(Object.keys(replaceList).join("|"), "gi");
+      const words = Object.keys(replaceList).filter(Boolean);
+      if (!words.length) return;
+      const patterns = words.map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+      const regex = new RegExp(patterns.join("|"), "gi");
 
       var res = inputText.replace(regex, function (matched) {
         return replaceList[matched.toLowerCase()];
       });
 
-      cheemsTelegramBot.sendMessage(chatId, res, {
-        reply_to_message_id: msg.message_id,
+      await ctx.reply(res, {
+        reply_parameters: { message_id: msg.message_id },
       });
     }
   }

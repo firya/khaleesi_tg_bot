@@ -1,4 +1,4 @@
-import TelegramBot from "node-telegram-bot-api";
+import { Bot } from "node-telegram-bot-api";
 import natural from "natural";
 
 import replaces from "./replaces.js";
@@ -8,13 +8,14 @@ const sentimentAnalyzer = new SentimentAnalyzer();
 
 const token = process.env.KHALEESI_TELEGRAM_TOKEN;
 
-export const khaleesiTelegramBot = new TelegramBot(token);
+export const khaleesiTelegramBot = new Bot(token);
+khaleesiTelegramBot.catch((error) => { throw error; });
 
 const minLengthGroup = 21;
 const JaroWinklerLimit = 0.95;
 
-khaleesiTelegramBot.on("message", (msg) => {
-  const chatId = msg.chat.id;
+khaleesiTelegramBot.on("message", async (ctx) => {
+  const msg = ctx.message;
   const chatType = msg.chat.type;
 
   const resChance = chatType == "supergroup" ? 3 : 100;
@@ -60,8 +61,8 @@ khaleesiTelegramBot.on("message", (msg) => {
         (chatType == "supergroup" &&
           natural.JaroWinklerDistance(msg.text, res) < JaroWinklerLimit)
       ) {
-        khaleesiTelegramBot.sendMessage(chatId, res, {
-          reply_to_message_id: msg.message_id,
+        await ctx.reply(res, {
+          reply_parameters: { message_id: msg.message_id },
         });
         //         var stems =
         //           sentiment && sentiment.info ? sentiment.info.join("; ") : "";

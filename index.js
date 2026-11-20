@@ -8,7 +8,6 @@ var app = express();
 
 app.use(express.urlencoded());
 app.use(express.json());
-app.set("view engine", "hbs");
 app.use(express.static("static"));
 
 app.get("/", function (req, res) {
@@ -19,18 +18,26 @@ app.get(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, (req, res) => {
   res.send("Khaleesi bot");
 });
 
-app.post(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, (req, res) => {
-  khaleesiTelegramBot.processUpdate(req.body);
-  res.sendStatus(200);
+app.post(`/bot${process.env.KHALEESI_TELEGRAM_TOKEN}`, async (req, res) => {
+  try {
+    await khaleesiTelegramBot.handleUpdate(req.body);
+    res.sendStatus(200);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 app.get(`/bot${process.env.CHEEMS_TELEGRAM_TOKEN}`, (req, res) => {
   res.send("Cheems bot");
 });
 
-app.post(`/bot${process.env.CHEEMS_TELEGRAM_TOKEN}`, (req, res) => {
-  cheemsTelegramBot.processUpdate(req.body);
-  res.sendStatus(200);
+app.post(`/bot${process.env.CHEEMS_TELEGRAM_TOKEN}`, async (req, res) => {
+  try {
+    await cheemsTelegramBot.handleUpdate(req.body);
+    res.sendStatus(200);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
 app.listen(80, function () {
